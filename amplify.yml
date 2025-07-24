@@ -3,16 +3,17 @@ frontend:
   phases:
     preBuild:
       commands:
-        - nvm install 22
-        - nvm use 22
-        - yarn install
+        - "npm install"
     build:
       commands:
-        - yarn build
+        - "npm run build"
+        - "cd build/compute/default/"
+        - "npm i --production"
+
   artifacts:
-    baseDirectory: .next
+    baseDirectory: build
     files:
       - "**/*"
   cache:
     paths:
-      - node_modules/**/*
+      - ".npm/**/*"
