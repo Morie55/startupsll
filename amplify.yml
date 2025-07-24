@@ -3,17 +3,14 @@ frontend:
   phases:
     preBuild:
       commands:
-        - "npm install"
+        - yarn install
     build:
       commands:
-        - "npm run build"
-        - "cd build/compute/default/"
-        - "npm i --production"
-
+        - yarn build
   artifacts:
-    baseDirectory: build
+    baseDirectory: .next
     files:
       - "**/*"
   cache:
     paths:
-      - ".npm/**/*"
+      -
