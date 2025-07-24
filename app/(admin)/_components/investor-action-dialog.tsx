@@ -88,18 +88,18 @@ export function InvestorActionDialog({
           title: "Approve Investor",
           description:
             "This investor will be marked as approved and can proceed with their application.",
-          icon: <CheckCircle className="h-5 w-5 text-green-600" />,
+          icon: <CheckCircle className="w-5 h-5 text-green-600" />,
           buttonText: "Approve",
           buttonClass: "bg-green-600 hover:bg-green-700",
           placeholder:
-            'Enter reason for approval (e.g., "All documents verified and requirements met")',
+            'Enter reason for approval (e.g., "All documents verified and requirements met before processing  application")',
         };
       case "rejected":
         return {
           title: "Reject Investor",
           description:
             "This investor will be marked as rejected and notified of the decision.",
-          icon: <XCircle className="h-5 w-5 text-red-600" />,
+          icon: <XCircle className="w-5 h-5 text-red-600" />,
           buttonText: "Reject",
           buttonClass: "bg-red-600 hover:bg-red-700",
           placeholder:
@@ -110,7 +110,7 @@ export function InvestorActionDialog({
           title: "Suspend Investor",
           description:
             "This investor will be temporarily suspended pending further review.",
-          icon: <Pause className="h-5 w-5 text-yellow-600" />,
+          icon: <Pause className="w-5 h-5 text-yellow-600" />,
           buttonText: "Suspend",
           buttonClass: "bg-yellow-600 hover:bg-yellow-700",
           placeholder:
@@ -121,7 +121,7 @@ export function InvestorActionDialog({
           title: "Delete Investor",
           description:
             "This investor record will be permanently removed from the system.",
-          icon: <Trash2 className="h-5 w-5 text-red-600" />,
+          icon: <Trash2 className="w-5 h-5 text-red-600" />,
           buttonText: "Delete",
           buttonClass: "bg-red-600 hover:bg-red-700",
           placeholder:
@@ -131,7 +131,7 @@ export function InvestorActionDialog({
         return {
           title: "Update Investor",
           description: "Update the investor status.",
-          icon: <AlertTriangle className="h-5 w-5" />,
+          icon: <AlertTriangle className="w-5 h-5" />,
           buttonText: "Update",
           buttonClass: "",
           placeholder: "Enter reason for this action",
@@ -161,7 +161,7 @@ export function InvestorActionDialog({
         <div className="space-y-4">
           {action === "deleted" && (
             <Alert variant="destructive">
-              <AlertTriangle className="h-4 w-4" />
+              <AlertTriangle className="w-4 h-4" />
               <AlertDescription>
                 <strong>Warning:</strong> This action cannot be undone. The
                 investor record will be permanently removed.
@@ -183,7 +183,7 @@ export function InvestorActionDialog({
 
           {error && (
             <Alert variant="destructive">
-              <AlertTriangle className="h-4 w-4" />
+              <AlertTriangle className="w-4 h-4" />
               <AlertDescription>{error}</AlertDescription>
             </Alert>
           )}
