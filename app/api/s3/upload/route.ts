@@ -52,3 +52,18 @@ export async function POST(request: Request) {
     );
   }
 }
+
+export async function GET(request: Request) {
+  try {
+    return NextResponse.json(
+      { message: "GET method  supported for this route" },
+      { status: 200 }
+    );
+  } catch (error) {
+    console.error("Error generating presigned URL:", error);
+    return NextResponse.json(
+      { error: "Failed to generate presigned URL" },
+      { status: 500 }
+    );
+  }
+}
