@@ -210,16 +210,16 @@ export default function OtherPlatforms() {
                   <div
                     className={`p-3 rounded-xl ${platform.color} transition-transform group-hover:scale-110`}
                   >
-                      {platform.icon}
-                    </div>
+                    {platform.icon}
+                  </div>
                   <div className="flex flex-col gap-2">
-                        <Badge
+                    <Badge
                       className={`${getStatusColor(
                         platform.status
                       )} font-medium`}
-                        >
-                          {platform.status}
-                        </Badge>
+                    >
+                      {platform.status}
+                    </Badge>
                     <Badge variant="outline" className="text-xs">
                       {platform.category}
                     </Badge>
@@ -259,31 +259,31 @@ export default function OtherPlatforms() {
                         <span className="truncate">
                           {platform.url.replace("https://", "")}
                         </span>
-                    </div>
-                    <Button
-                      size="sm"
-                      disabled={platform.status === "Coming Soon"}
-                      asChild={platform.status === "Active"}
+                      </div>
+                      <Button
+                        size="sm"
+                        disabled={platform.status === "Coming Soon"}
+                        asChild={platform.status === "Active"}
                         className={`flex-shrink-0 ${
                           platform.status === "Active"
                             ? "bg-blue-600 hover:bg-blue-700 text-white shadow-md hover:shadow-lg"
                             : ""
                         }`}
-                    >
-                      {platform.status === "Active" ? (
-                        <a
-                          href={platform.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
+                      >
+                        {platform.status === "Active" ? (
+                          <a
+                            href={platform.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
                             className="flex items-center"
-                        >
-                          Visit
+                          >
+                            Visit
                             <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" />
-                        </a>
-                      ) : (
+                          </a>
+                        ) : (
                           <span className="flex items-center">Coming Soon</span>
-                      )}
-                    </Button>
+                        )}
+                      </Button>
                     </div>
                   </div>
                 </div>
