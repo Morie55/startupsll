@@ -1,5 +1,6 @@
-"use client";
+//
 
+"use client";
 import {
   Card,
   CardContent,
@@ -47,7 +48,7 @@ export default function OtherPlatforms() {
       name: "Innosl digital",
       description: "Innovation Sl portfolio for all IT stuffs.",
       url: "https://innosldigital.com/",
-      category: "Community",
+      category: "Innovation",
       icon: <Users className="w-5 h-5" />,
       status: "Active",
       features: ["Networking", "Events", "Job Board"],
@@ -58,7 +59,7 @@ export default function OtherPlatforms() {
       name: "Innosl",
       description: "Official Innovation SL Website.",
       url: "https://www.innosl.com/",
-      category: "",
+      category: "Community",
       icon: <BookOpen className="w-5 h-5" />,
       status: "Active",
       features: ["Event", "Innovation", "Pitch", "Workshops"],
@@ -89,7 +90,7 @@ export default function OtherPlatforms() {
       color: "bg-indigo-100 text-indigo-700",
     },
     {
-      id: 8,
+      id: 6,
       name: "Salone Crowdfunder",
       description:
         "Crowdfunding platform empowering startups and innovative projects to secure funding.",
@@ -99,6 +100,17 @@ export default function OtherPlatforms() {
       status: "Active",
       features: ["Campaign Management", "Investor Network", "Project Showcase"],
       color: "bg-orange-100 text-orange-700",
+    },
+    {
+      id: 7,
+      name: "StartUp Sierra Leone",
+      description: "Supporting startups and entrepreneurs across Sierra Leone.",
+      url: "https://www.startupsierraleone.com/",
+      category: "Community",
+      icon: <Briefcase className="w-5 h-5" />,
+      status: "Active",
+      features: ["Startup Support", "Networking", "Resources", "Mentorship"],
+      color: "bg-teal-100 text-teal-700",
     },
   ];
 
@@ -146,7 +158,6 @@ export default function OtherPlatforms() {
               designed to accelerate innovation, foster entrepreneurship, and
               build a thriving tech community in Sierra Leone.
             </p>
-
             {/* Enhanced Search */}
             <div className="relative max-w-md mx-auto">
               <div className="relative">
@@ -232,7 +243,6 @@ export default function OtherPlatforms() {
                   {platform.description}
                 </CardDescription>
               </CardHeader>
-
               <CardContent className="pt-0">
                 <div className="space-y-4">
                   <div>
@@ -251,7 +261,6 @@ export default function OtherPlatforms() {
                       ))}
                     </div>
                   </div>
-
                   <div className="pt-4 border-t border-slate-100 dark:border-slate-700">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center flex-1 min-w-0 mr-3 text-sm text-slate-500 dark:text-slate-400">
@@ -323,12 +332,11 @@ export default function OtherPlatforms() {
                   Get Support
                 </Button>
               </div>
-
               {/* Stats */}
               <div className="grid grid-cols-2 gap-6 pt-8 mt-8 border-t border-blue-200 md:grid-cols-4 dark:border-blue-800">
                 <div className="text-center">
                   <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
-                    8+
+                    7+
                   </div>
                   <div className="text-sm text-slate-600 dark:text-slate-400">
                     Platforms
