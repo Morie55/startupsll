@@ -94,7 +94,6 @@ export default function ClientLayout({
                 className="object-contain w-full h-full rounded-md"
               />
             </div>
-            <span className="text-lg font-bold">StartUpSL</span>
           </Link>
 
           <div className="justify-center flex-1 hidden md:flex">
