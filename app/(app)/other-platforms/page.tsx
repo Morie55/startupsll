@@ -148,7 +148,7 @@ export default function OtherPlatforms() {
         <div className="relative px-4 py-12 mx-auto max-w-7xl sm:px-6 lg:px-8 lg:py-20">
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="mb-6 text-4xl font-bold sm:text-5xl lg:text-6xl text-slate-900 dark:text-white">
-              Innovation Salone
+              Innovation SL
               <span className="block text-blue-600 dark:text-blue-400">
                 Ecosystem
               </span>
