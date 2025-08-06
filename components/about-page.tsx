@@ -1,9 +1,20 @@
 "use client";
 
 import Image from "next/image";
-import { Building2, Mail, MapPin, Phone } from "lucide-react";
-
+import {
+  Building2,
+  Mail,
+  MapPin,
+  Phone,
+  Users,
+  Target,
+  Globe,
+  Award,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
 import {
   Card,
   CardContent,
@@ -12,271 +23,420 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Badge } from "@/components/ui/badge";
 
 const team = [
   {
     id: 1,
     name: "Sarah Johnson",
     role: "Executive Director",
-    image: "/placeholder.svg?height=300&width=300",
-    bio: "Sarah has over 15 years of experience in entrepreneurship and ecosystem building.",
+    image: "/placeholder.svg?height=400&width=400",
+    bio: "Sarah has over 15 years of experience in entrepreneurship and ecosystem building, leading strategic initiatives across West Africa.",
+    expertise: ["Strategy", "Leadership", "Ecosystem Building"],
   },
   {
     id: 2,
     name: "Michael Kamara",
     role: "Head of Programs",
-    image: "/placeholder.svg?height=300&width=300",
-    bio: "Michael leads our startup support programs and mentorship initiatives.",
+    image: "/placeholder.svg?height=400&width=400",
+    bio: "Michael leads our startup support programs and mentorship initiatives, with a focus on sustainable business development.",
+    expertise: ["Program Management", "Mentorship", "Business Development"],
   },
   {
     id: 3,
     name: "Aminata Sesay",
     role: "Investor Relations",
-    image: "/placeholder.svg?height=300&width=300",
-    bio: "Aminata connects startups with investors and manages funding relationships.",
+    image: "/placeholder.svg?height=400&width=400",
+    bio: "Aminata connects startups with investors and manages funding relationships, bringing extensive experience in venture capital.",
+    expertise: ["Investment", "Fundraising", "Venture Capital"],
   },
   {
     id: 4,
     name: "David Cole",
     role: "Technology Lead",
-    image: "/placeholder.svg?height=300&width=300",
-    bio: "David oversees our technology infrastructure and digital initiatives.",
+    image: "/placeholder.svg?height=400&width=400",
+    bio: "David oversees our technology infrastructure and digital initiatives, ensuring scalable solutions for our ecosystem.",
+    expertise: ["Technology", "Digital Innovation", "Infrastructure"],
   },
+];
+
+const partners = [
+  {
+    name: "Ministry of Innovation",
+    description: "Government partner supporting innovation initiatives",
+    icon: Building2,
+  },
+  {
+    name: "Global Ventures",
+    description: "International investment and advisory firm",
+    icon: Globe,
+  },
+  {
+    name: "Tech Foundation",
+    description: "Non-profit supporting technology education",
+    icon: Award,
+  },
+  {
+    name: "Innovation Hub",
+    description: "Co-working and incubation space provider",
+    icon: Users,
+  },
+];
+
+const stats = [
+  { label: "Startups Supported", value: "150+" },
+  { label: "Jobs Created", value: "500+" },
+  { label: "Funding Raised", value: "$2.5M+" },
+  { label: "Active Partners", value: "25+" },
 ];
 
 export function AboutPage() {
   return (
-    <div className="flex flex-col gap-6 p-6 md:gap-8 md:p-8">
-      <div>
-        <h1 className="text-3xl font-bold tracking-tight">About StartUpSL</h1>
-        <p className="text-muted-foreground">
-          Learn about our mission and team
-        </p>
-      </div>
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-white">
+      <div className="container px-4 py-12 mx-auto md:px-6 lg:px-8">
+        {/* Header Section */}
+        <div className="mb-12 text-center">
+          <h1 className="mb-4 text-4xl font-bold tracking-tight text-transparent md:text-5xl bg-gradient-to-r from-slate-900 to-slate-600 bg-clip-text">
+            About StartUpSL
+          </h1>
+          <p className="max-w-2xl mx-auto text-xl text-muted-foreground">
+            Empowering Sierra Leone's next generation of entrepreneurs and
+            innovators
+          </p>
+        </div>
 
-      <Tabs defaultValue="mission" className="w-full">
-        <TabsList>
-          <TabsTrigger value="mission">Our Mission</TabsTrigger>
-          <TabsTrigger value="team">Our Team</TabsTrigger>
-          <TabsTrigger value="partners">Partners</TabsTrigger>
-          <TabsTrigger value="contact">Contact Us</TabsTrigger>
-        </TabsList>
-        <TabsContent value="mission" className="mt-4 space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>Our Mission</CardTitle>
-              <CardDescription>
-                Building Sierra Leone's startup ecosystem
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="aspect-video overflow-hidden rounded-lg bg-muted">
-                <Image
-                  src="/images/placeholder1.jpg?height=720&width=1280"
-                  alt="StartUpSL team"
-                  width={1280}
-                  height={720}
-                  className="h-full w-full object-cover"
-                />
-              </div>
-              <div className="space-y-4">
-                <p>
-                  StartUpSL is an ecosystem for all to share resources,
-                  collaborate and support. We encourage startups and other
-                  established companies to register with us to access resources,
-                  networking opportunities, and support services that can help
-                  accelerate their growth.
-                </p>
-                <p>
-                  Our mission is to foster innovation, entrepreneurship, and
-                  economic growth in Sierra Leone by providing a comprehensive
-                  platform that connects startups, investors, and resources. We
-                  believe that by building a strong startup ecosystem, we can
-                  create jobs, drive innovation, and contribute to the
-                  sustainable development of Sierra Leone.
-                </p>
-                <h3 className="text-xl font-semibold">Our Goals</h3>
-                <ul className="list-disc pl-6 space-y-2">
-                  <li>
-                    Support entrepreneurs in building successful, scalable
-                    businesses
-                  </li>
-                  <li>
-                    Connect startups with investors and funding opportunities
-                  </li>
-                  <li>
-                    Provide resources, mentorship, and training for startup
-                    growth
-                  </li>
-                  <li>
-                    Foster collaboration between startups, established
-                    companies, and government
-                  </li>
-                  <li>
-                    Showcase Sierra Leone's innovation and entrepreneurial
-                    talent
-                  </li>
-                  <li>Attract international investment and partnerships</li>
-                </ul>
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-        <TabsContent value="team" className="mt-4">
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {team.map((member) => (
-              <Card key={member.id} className="overflow-hidden">
-                <CardContent className="p-0">
-                  <div className="aspect-square overflow-hidden">
-                    <Image
-                      src={member.image || "/placeholder.svg"}
-                      alt={member.name}
-                      width={300}
-                      height={300}
-                      className="h-full w-full object-cover transition-transform hover:scale-105"
-                    />
+        {/* Stats Section */}
+        <div className="grid grid-cols-2 gap-6 mb-12 md:grid-cols-4">
+          {stats.map((stat, index) => (
+            <Card
+              key={index}
+              className="text-center border-0 shadow-lg bg-white/80 backdrop-blur-sm"
+            >
+              <CardContent className="pt-6">
+                <div className="mb-2 text-3xl font-bold text-primary">
+                  {stat.value}
+                </div>
+                <div className="text-sm text-muted-foreground">
+                  {stat.label}
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+
+        {/* Main Content */}
+        <Tabs defaultValue="mission" className="w-full">
+          <TabsList className="grid w-full grid-cols-4 mb-8 bg-white/80 backdrop-blur-sm">
+            <TabsTrigger value="mission" className="flex items-center gap-2">
+              <Target className="w-4 h-4" />
+              <span className="hidden sm:inline">Our Mission</span>
+              <span className="sm:hidden">Mission</span>
+            </TabsTrigger>
+            <TabsTrigger value="team" className="flex items-center gap-2">
+              <Users className="w-4 h-4" />
+              <span className="hidden sm:inline">Our Team</span>
+              <span className="sm:hidden">Team</span>
+            </TabsTrigger>
+            <TabsTrigger value="partners" className="flex items-center gap-2">
+              <Building2 className="w-4 h-4" />
+              <span className="hidden sm:inline">Partners</span>
+              <span className="sm:hidden">Partners</span>
+            </TabsTrigger>
+            <TabsTrigger value="contact" className="flex items-center gap-2">
+              <Mail className="w-4 h-4" />
+              <span className="hidden sm:inline">Contact</span>
+              <span className="sm:hidden">Contact</span>
+            </TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="mission" className="space-y-8">
+            <Card className="border-0 shadow-xl bg-white/90 backdrop-blur-sm">
+              <CardHeader className="pb-8 text-center">
+                <CardTitle className="text-3xl font-bold">
+                  Our Mission
+                </CardTitle>
+                <CardDescription className="text-lg">
+                  Building Sierra Leone's most vibrant startup ecosystem
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-8">
+                <div className="relative overflow-hidden aspect-video rounded-xl bg-gradient-to-r from-blue-500 to-purple-600">
+                  <Image
+                    src="/placeholder.svg?height=720&width=1280"
+                    alt="StartUpSL ecosystem"
+                    width={1280}
+                    height={720}
+                    className="object-cover w-full h-full opacity-90"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+                </div>
+
+                <div className="grid gap-8 md:grid-cols-2">
+                  <div className="space-y-6">
+                    <div>
+                      <h3 className="mb-4 text-2xl font-semibold text-slate-900">
+                        Who We Are
+                      </h3>
+                      <p className="leading-relaxed text-muted-foreground">
+                        StartUpSL is Sierra Leone's premier startup ecosystem
+                        platform, designed to connect, support, and accelerate
+                        the growth of innovative businesses across the country.
+                        We serve as the central hub where entrepreneurs,
+                        investors, mentors, and resources converge to create
+                        lasting impact.
+                      </p>
+                    </div>
+
+                    <div>
+                      <h3 className="mb-4 text-2xl font-semibold text-slate-900">
+                        Our Vision
+                      </h3>
+                      <p className="leading-relaxed text-muted-foreground">
+                        To position Sierra Leone as a leading innovation hub in
+                        West Africa, fostering sustainable economic growth
+                        through entrepreneurship, technology, and strategic
+                        partnerships that create opportunities for all.
+                      </p>
+                    </div>
                   </div>
-                  <div className="p-4">
-                    <h3 className="font-semibold">{member.name}</h3>
-                    <p className="text-sm text-muted-foreground">
-                      {member.role}
-                    </p>
-                    <p className="mt-2 text-sm">{member.bio}</p>
+
+                  <div>
+                    <h3 className="mb-6 text-2xl font-semibold text-slate-900">
+                      Our Impact Goals
+                    </h3>
+                    <div className="space-y-4">
+                      {[
+                        "Support entrepreneurs in building scalable, sustainable businesses",
+                        "Connect startups with investors and funding opportunities",
+                        "Provide comprehensive resources, mentorship, and training programs",
+                        "Foster collaboration between startups, corporations, and government",
+                        "Showcase Sierra Leone's innovation and entrepreneurial talent globally",
+                        "Attract international investment and strategic partnerships",
+                      ].map((goal, index) => (
+                        <div key={index} className="flex items-start gap-3">
+                          <div className="flex-shrink-0 w-2 h-2 mt-2 rounded-full bg-primary" />
+                          <p className="text-muted-foreground">{goal}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="team" className="space-y-8">
+            <div className="mb-8 text-center">
+              <h2 className="mb-4 text-3xl font-bold">
+                Meet Our Leadership Team
+              </h2>
+              <p className="max-w-2xl mx-auto text-lg text-muted-foreground">
+                Our diverse team brings together decades of experience in
+                entrepreneurship, technology, and ecosystem development.
+              </p>
+            </div>
+
+            <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
+              {team.map((member) => (
+                <Card
+                  key={member.id}
+                  className="overflow-hidden transition-all duration-300 border-0 shadow-lg group hover:shadow-xl bg-white/90 backdrop-blur-sm"
+                >
+                  <CardContent className="p-0">
+                    <div className="relative overflow-hidden aspect-square">
+                      <Image
+                        src={member.image || "/placeholder.svg"}
+                        alt={member.name}
+                        width={400}
+                        height={400}
+                        className="object-cover w-full h-full transition-transform duration-300 group-hover:scale-105"
+                      />
+                      <div className="absolute inset-0 transition-opacity duration-300 opacity-0 bg-gradient-to-t from-black/60 via-transparent to-transparent group-hover:opacity-100" />
+                    </div>
+                    <div className="p-6 space-y-4">
+                      <div>
+                        <h3 className="text-xl font-semibold text-slate-900">
+                          {member.name}
+                        </h3>
+                        <p className="font-medium text-primary">
+                          {member.role}
+                        </p>
+                      </div>
+                      <p className="text-sm leading-relaxed text-muted-foreground">
+                        {member.bio}
+                      </p>
+                      <div className="flex flex-wrap gap-2">
+                        {member.expertise.map((skill, index) => (
+                          <Badge
+                            key={index}
+                            variant="secondary"
+                            className="text-xs"
+                          >
+                            {skill}
+                          </Badge>
+                        ))}
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </TabsContent>
+
+          <TabsContent value="partners" className="space-y-8">
+            <Card className="border-0 shadow-xl bg-white/90 backdrop-blur-sm">
+              <CardHeader className="text-center">
+                <CardTitle className="text-3xl font-bold">
+                  Strategic Partners
+                </CardTitle>
+                <CardDescription className="text-lg">
+                  Collaborating with leading organizations to strengthen our
+                  ecosystem
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
+                  {partners.map((partner, index) => (
+                    <div key={index} className="space-y-4 text-center group">
+                      <div className="flex items-center justify-center w-24 h-24 mx-auto transition-all duration-300 shadow-lg rounded-2xl bg-gradient-to-br from-primary/10 to-primary/5 group-hover:from-primary/20 group-hover:to-primary/10">
+                        <partner.icon className="w-12 h-12 text-primary" />
+                      </div>
+                      <div>
+                        <h3 className="mb-2 text-lg font-semibold text-slate-900">
+                          {partner.name}
+                        </h3>
+                        <p className="text-sm text-muted-foreground">
+                          {partner.description}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="contact" className="space-y-8">
+            <div className="grid gap-8 lg:grid-cols-2">
+              <Card className="border-0 shadow-xl bg-white/90 backdrop-blur-sm">
+                <CardHeader>
+                  <CardTitle className="text-2xl font-bold">
+                    Get In Touch
+                  </CardTitle>
+                  <CardDescription className="text-base">
+                    Ready to join Sierra Leone's startup revolution? We'd love
+                    to hear from you.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <div className="space-y-6">
+                    <div className="flex items-start gap-4">
+                      <div className="flex items-center justify-center flex-shrink-0 w-12 h-12 rounded-lg bg-primary/10">
+                        <MapPin className="w-6 h-6 text-primary" />
+                      </div>
+                      <div>
+                        <h3 className="mb-1 font-semibold text-slate-900">
+                          Visit Our Office
+                        </h3>
+                        <p className="text-muted-foreground">
+                          123 Innovation Street
+                          <br />
+                          Freetown, Sierra Leone
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-start gap-4">
+                      <div className="flex items-center justify-center flex-shrink-0 w-12 h-12 rounded-lg bg-primary/10">
+                        <Mail className="w-6 h-6 text-primary" />
+                      </div>
+                      <div>
+                        <h3 className="mb-1 font-semibold text-slate-900">
+                          Email Us
+                        </h3>
+                        <p className="text-muted-foreground">
+                          info@startupsl.org
+                          <br />
+                          support@startupsl.org
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-start gap-4">
+                      <div className="flex items-center justify-center flex-shrink-0 w-12 h-12 rounded-lg bg-primary/10">
+                        <Phone className="w-6 h-6 text-primary" />
+                      </div>
+                      <div>
+                        <h3 className="mb-1 font-semibold text-slate-900">
+                          Call Us
+                        </h3>
+                        <p className="text-muted-foreground">
+                          +232 76 123 4567
+                          <br />
+                          +232 77 987 6543
+                        </p>
+                      </div>
+                    </div>
                   </div>
                 </CardContent>
               </Card>
-            ))}
-          </div>
-        </TabsContent>
-        <TabsContent value="partners" className="mt-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>Our Partners</CardTitle>
-              <CardDescription>
-                Organizations that support our mission
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
-                <div className="flex flex-col items-center">
-                  <div className="flex h-20 w-20 items-center justify-center rounded-md bg-muted">
-                    <Building2 className="h-10 w-10 text-muted-foreground" />
-                  </div>
-                  <h3 className="mt-2 text-center font-medium">
-                    Ministry of Innovation
-                  </h3>
-                </div>
-                <div className="flex flex-col items-center">
-                  <div className="flex h-20 w-20 items-center justify-center rounded-md bg-muted">
-                    <Building2 className="h-10 w-10 text-muted-foreground" />
-                  </div>
-                  <h3 className="mt-2 text-center font-medium">
-                    Global Ventures
-                  </h3>
-                </div>
-                <div className="flex flex-col items-center">
-                  <div className="flex h-20 w-20 items-center justify-center rounded-md bg-muted">
-                    <Building2 className="h-10 w-10 text-muted-foreground" />
-                  </div>
-                  <h3 className="mt-2 text-center font-medium">
-                    Tech Foundation
-                  </h3>
-                </div>
-                <div className="flex flex-col items-center">
-                  <div className="flex h-20 w-20 items-center justify-center rounded-md bg-muted">
-                    <Building2 className="h-10 w-10 text-muted-foreground" />
-                  </div>
-                  <h3 className="mt-2 text-center font-medium">
-                    Innovation Hub
-                  </h3>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-        <TabsContent value="contact" className="mt-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>Contact Us</CardTitle>
-              <CardDescription>Get in touch with our team</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="grid gap-4 md:grid-cols-2">
-                <div className="space-y-4">
-                  <div className="flex items-start space-x-4">
-                    <MapPin className="mt-0.5 h-5 w-5 text-muted-foreground" />
-                    <div>
-                      <h3 className="font-medium">Address</h3>
-                      <p className="text-sm text-muted-foreground">
-                        123 Innovation Street
-                        <br />
-                        Freetown, Sierra Leone
-                      </p>
+
+              <Card className="border-0 shadow-xl bg-white/90 backdrop-blur-sm">
+                <CardHeader>
+                  <CardTitle className="text-2xl font-bold">
+                    Send Us a Message
+                  </CardTitle>
+                  <CardDescription className="text-base">
+                    Have a question or want to learn more? Drop us a line.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <form className="space-y-6">
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="firstName">First Name</Label>
+                        <Input id="firstName" placeholder="John" />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="lastName">Last Name</Label>
+                        <Input id="lastName" placeholder="Doe" />
+                      </div>
                     </div>
-                  </div>
-                  <div className="flex items-start space-x-4">
-                    <Mail className="mt-0.5 h-5 w-5 text-muted-foreground" />
-                    <div>
-                      <h3 className="font-medium">Email</h3>
-                      <p className="text-sm text-muted-foreground">
-                        info@startupsl.org
-                        <br />
-                        support@startupsl.org
-                      </p>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="email">Email Address</Label>
+                      <Input
+                        id="email"
+                        type="email"
+                        placeholder="john@example.com"
+                      />
                     </div>
-                  </div>
-                  <div className="flex items-start space-x-4">
-                    <Phone className="mt-0.5 h-5 w-5 text-muted-foreground" />
-                    <div>
-                      <h3 className="font-medium">Phone</h3>
-                      <p className="text-sm text-muted-foreground">
-                        +232 76 123 4567
-                        <br />
-                        +232 77 987 6543
-                      </p>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="subject">Subject</Label>
+                      <Input id="subject" placeholder="How can we help you?" />
                     </div>
-                  </div>
-                </div>
-                <div className="space-y-4">
-                  <div className="space-y-2">
-                    <label htmlFor="name" className="text-sm font-medium">
-                      Name
-                    </label>
-                    <input
-                      id="name"
-                      className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-                      placeholder="Your name"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <label htmlFor="email" className="text-sm font-medium">
-                      Email
-                    </label>
-                    <input
-                      id="email"
-                      type="email"
-                      className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-                      placeholder="Your email"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <label htmlFor="message" className="text-sm font-medium">
-                      Message
-                    </label>
-                    <textarea
-                      id="message"
-                      className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-                      placeholder="Your message"
-                      rows={4}
-                    />
-                  </div>
-                  <Button className="w-full">Send Message</Button>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-      </Tabs>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="message">Message</Label>
+                      <Textarea
+                        id="message"
+                        placeholder="Tell us more about your inquiry..."
+                        rows={5}
+                        className="resize-none"
+                      />
+                    </div>
+
+                    <Button className="w-full py-3 font-semibold text-white bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70">
+                      Send Message
+                    </Button>
+                  </form>
+                </CardContent>
+              </Card>
+            </div>
+          </TabsContent>
+        </Tabs>
+      </div>
     </div>
   );
 }
