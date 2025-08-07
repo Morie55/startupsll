@@ -28,23 +28,23 @@ import { Badge } from "@/components/ui/badge";
 const team = [
   {
     id: 1,
-    name: "Sarah Johnson",
+    name: "Francis Steven George",
     role: "Executive Director",
     image: "/placeholder.svg?height=400&width=400",
-    bio: "Sarah has over 15 years of experience in entrepreneurship and ecosystem building, leading strategic initiatives across West Africa.",
+    bio: "Mr. Francis has over 15 years of experience in entrepreneurship and ecosystem building, leading strategic initiatives across West Africa.",
     expertise: ["Strategy", "Leadership", "Ecosystem Building"],
   },
   {
     id: 2,
-    name: "Michael Kamara",
+    name: "Ngevao Sesay",
     role: "Head of Programs",
     image: "/placeholder.svg?height=400&width=400",
-    bio: "Michael leads our startup support programs and mentorship initiatives, with a focus on sustainable business development.",
+    bio: "Ngevao leads our startup support programs and mentorship initiatives, with a focus on sustainable business development.",
     expertise: ["Program Management", "Mentorship", "Business Development"],
   },
   {
     id: 3,
-    name: "Aminata Sesay",
+    name: "Diana Lake",
     role: "Investor Relations",
     image: "/placeholder.svg?height=400&width=400",
     bio: "Aminata connects startups with investors and manages funding relationships, bringing extensive experience in venture capital.",
@@ -52,10 +52,10 @@ const team = [
   },
   {
     id: 4,
-    name: "David Cole",
+    name: "Morie Keita",
     role: "Technology Lead",
-    image: "/placeholder.svg?height=400&width=400",
-    bio: "David oversees our technology infrastructure and digital initiatives, ensuring scalable solutions for our ecosystem.",
+    image: "/images/Morie_Keita.jpg",
+    bio: "Morie oversees our technology infrastructure and digital initiatives, ensuring scalable solutions for our ecosystem.",
     expertise: ["Technology", "Digital Innovation", "Infrastructure"],
   },
 ];
@@ -162,7 +162,7 @@ export function AboutPage() {
               <CardContent className="space-y-8">
                 <div className="relative overflow-hidden aspect-video rounded-xl bg-gradient-to-r from-blue-500 to-purple-600">
                   <Image
-                    src="/placeholder.svg?height=720&width=1280"
+                    src="/images/startupslbg.png"
                     alt="StartUpSL ecosystem"
                     width={1280}
                     height={720}
