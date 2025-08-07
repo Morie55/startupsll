@@ -185,7 +185,7 @@ export function HomePage({ stats }: { stats: any }) {
                 ))
               ) : (
                 <li className="text-muted-foreground">
-                  No startups found. Please check back later.
+                  No startups found. Please check back later please.
                 </li>
               )}
             </ul>
