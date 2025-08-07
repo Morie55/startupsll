@@ -4,59 +4,59 @@ import { Calendar, ExternalLink, MapPin, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 
-const newCompanies = [
-  {
-    id: 1,
-    name: "TechInnovate",
-    logo: "/placeholder.svg?height=40&width=40",
-    description: "Software development and IT consulting services",
-    location: "Freetown",
-    founded: "May 2024",
-    employees: "10-20",
-  },
-  {
-    id: 2,
-    name: "GreenFarms",
-    logo: "/placeholder.svg?height=40&width=40",
-    description: "Organic farming and sustainable agriculture",
-    location: "Bo",
-    founded: "April 2024",
-    employees: "5-10",
-  },
-  {
-    id: 3,
-    name: "UrbanMobility",
-    logo: "/placeholder.svg?height=40&width=40",
-    description: "Transportation and logistics solutions",
-    location: "Freetown",
-    founded: "April 2024",
-    employees: "10-20",
-  },
-  {
-    id: 4,
-    name: "EduLearn",
-    logo: "/placeholder.svg?height=40&width=40",
-    description: "Educational technology and e-learning platforms",
-    location: "Kenema",
-    founded: "March 2024",
-    employees: "5-10",
-  },
-];
+// const newCompanies = [
+//   {
+//     id: 1,
+//     name: "TechInnovate",
+//     logo: "/placeholder.svg?height=40&width=40",
+//     description: "Software development and IT consulting services",
+//     location: "Freetown",
+//     founded: "May 2024",
+//     employees: "10-20",
+//   },
+//   {
+//     id: 2,
+//     name: "GreenFarms",
+//     logo: "/placeholder.svg?height=40&width=40",
+//     description: "Organic farming and sustainable agriculture",
+//     location: "Bo",
+//     founded: "April 2024",
+//     employees: "5-10",
+//   },
+//   {
+//     id: 3,
+//     name: "UrbanMobility",
+//     logo: "/placeholder.svg?height=40&width=40",
+//     description: "Transportation and logistics solutions",
+//     location: "Freetown",
+//     founded: "April 2024",
+//     employees: "10-20",
+//   },
+//   {
+//     id: 4,
+//     name: "EduLearn",
+//     logo: "/placeholder.svg?height=40&width=40",
+//     description: "Educational technology and e-learning platforms",
+//     location: "Kenema",
+//     founded: "March 2024",
+//     employees: "5-10",
+//   },
+// ];
 
-export function NewCompaniesList() {
+export function NewCompaniesList({ newCompany }: { newCompany: any[] }) {
   return (
     <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-      {newCompanies.map((company) => (
-        <Card key={company.id}>
+      {newCompany?.map((company) => (
+        <Card key={company._id}>
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-md bg-muted">
+              <div className="flex items-center justify-center w-10 h-10 overflow-hidden rounded-md bg-muted">
                 <Image
                   src={company.logo || "/placeholder.svg"}
                   alt={`${company.name} logo`}
                   width={40}
                   height={40}
-                  className="h-full w-full object-cover"
+                  className="object-cover w-full h-full"
                 />
               </div>
               <div>
@@ -80,8 +80,8 @@ export function NewCompaniesList() {
                 {company.employees} employees
               </div>
             </div>
-            <Button variant="outline" size="sm" className="mt-4 w-full">
-              View Profile <ExternalLink className="ml-1 h-3 w-3" />
+            <Button variant="outline" size="sm" className="w-full mt-4">
+              View Profile <ExternalLink className="w-3 h-3 ml-1" />
             </Button>
           </CardContent>
         </Card>

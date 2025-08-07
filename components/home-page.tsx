@@ -26,11 +26,27 @@ import { useUser } from "@clerk/nextjs";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-export function HomePage() {
+import { getLatestStartups } from "@/app/actions/lastest-startups";
+// import { getDashboardStats } from "@/app/actions/dashboardStat";
+import type Company from "@/models/Company";
+// import { cn } from "@/lib/utils";
+// import { CompanyProfileSkeleton } from "@/components/CompanyProfileSkeleton";
+// import { CompanyProfile } from "@/components/CompanyProfile";
+
+export function HomePage({ stats }: { stats: any }) {
   const { user, isLoaded } = useUser();
   const router = useRouter();
   const pathname = usePathname();
   const [redirecting, setRedirecting] = useState(true);
+  const [startups, setStartups] = useState<Company[]>([]);
+
+  useEffect(() => {
+    async function fetchStartups() {
+      const latestStartups = await getLatestStartups();
+      setStartups(latestStartups);
+    }
+    fetchStartups();
+  }, []);
 
   useEffect(() => {
     if (!isLoaded) return;
@@ -66,7 +82,7 @@ export function HomePage() {
       {/* Hero Section */}
       <section className="relative overflow-hidden rounded-lg bg-primary text-primary-foreground">
         <div className="relative z-10 px-6 py-12 md:px-12 md:py-24">
-          <div className="mx-auto max-w-4xl text-center">
+          <div className="max-w-4xl mx-auto text-center">
             <h1 className="mb-4 text-4xl font-bold tracking-tight md:text-6xl">
               Welcome to StartUpSL
             </h1>
@@ -93,7 +109,7 @@ export function HomePage() {
           alt="StartUpSL Hero"
           width={1280}
           height={720}
-          className="absolute inset-0 h-full w-full object-cover opacity-55"
+          className="absolute inset-0 object-cover w-full h-full opacity-55"
         />
       </section>
 
@@ -105,31 +121,39 @@ export function HomePage() {
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
           <StatCard
             title="Companies"
-            value="934"
-            icon={<Building2 className="h-4 w-4" />}
-            description="+8% from last month"
-            trend="up"
+            value={stats.companies.total.toLocaleString()}
+            description={`${stats.companies.change > 0 ? "+" : ""}${
+              stats.companies.change
+            }% from last month`}
+            icon={<Building2 className="w-4 h-4" />}
+            trend={stats.companies.change > 0 ? "up" : "down"}
           />
           <StatCard
-            title="Funding Rounds"
-            value="99"
-            icon={<TrendingUp className="h-4 w-4" />}
-            description="+12% from last month"
-            trend="up"
+            title="Rounds"
+            value={stats.rounds.total?.toLocaleString()}
+            description={`${stats.rounds.change > 0 ? "+" : ""}${
+              stats.rounds.change
+            }% from last month`}
+            icon={<TrendingUp className="w-4 h-4" />}
+            trend={stats.rounds.change > 0 ? "up" : "down"}
           />
           <StatCard
-            title="Total Employees"
-            value="50,403"
-            icon={<Users className="h-4 w-4" />}
-            description="+5% from last month"
-            trend="up"
+            title="Employees"
+            value={` ${stats.employees.range}`}
+            description={`${stats.employees.change > 0 ? "+" : ""}${
+              stats.employees.change
+            }% from last month`}
+            icon={<Users className="w-4 h-4" />}
+            trend={stats.employees.change > 0 ? "up" : "down"}
           />
           <StatCard
             title="VC Investment"
-            value="$42M"
-            icon={<BarChart3 className="h-4 w-4" />}
-            description="+15% from last month"
-            trend="up"
+            value={`$${stats.vcInvestment.total.toFixed(1)}M`}
+            description={`${stats.vcInvestment.change > 0 ? "+" : ""}${
+              stats.vcInvestment.change
+            }% from last month`}
+            icon={<BarChart3 className="w-4 h-4" />}
+            trend={stats.vcInvestment.change > 0 ? "up" : "down"}
           />
         </div>
       </section>
@@ -145,30 +169,25 @@ export function HomePage() {
           </CardHeader>
           <CardContent>
             <ul className="space-y-2">
-              <li className="flex items-center justify-between">
-                <span>EcoHarvest</span>
-                <Button variant="ghost" size="sm" asChild>
-                  <Link href="/companies">
-                    View <ChevronRight className="ml-1 h-4 w-4" />
-                  </Link>
-                </Button>
-              </li>
-              <li className="flex items-center justify-between">
-                <span>PayQuick</span>
-                <Button variant="ghost" size="sm" asChild>
-                  <Link href="/companies">
-                    View <ChevronRight className="ml-1 h-4 w-4" />
-                  </Link>
-                </Button>
-              </li>
-              <li className="flex items-center justify-between">
-                <span>MediConnect</span>
-                <Button variant="ghost" size="sm" asChild>
-                  <Link href="/companies">
-                    View <ChevronRight className="ml-1 h-4 w-4" />
-                  </Link>
-                </Button>
-              </li>
+              {stats.newCompany.length > 0 ? (
+                stats.newCompany.map((startup: any) => (
+                  <li
+                    key={startup._id}
+                    className="flex items-center justify-between"
+                  >
+                    <span>{startup.name}</span>
+                    <Button variant="ghost" size="sm" asChild>
+                      <Link href={`/companies/${startup._id}`}>
+                        View <ChevronRight className="w-4 h-4 ml-1" />
+                      </Link>
+                    </Button>
+                  </li>
+                ))
+              ) : (
+                <li className="text-muted-foreground">
+                  No startups found. Please check back later.
+                </li>
+              )}
             </ul>
           </CardContent>
         </Card>
@@ -186,7 +205,7 @@ export function HomePage() {
                 </div>
                 <Button variant="ghost" size="sm" asChild>
                   <Link href="/events">
-                    Details <ChevronRight className="ml-1 h-4 w-4" />
+                    Details <ChevronRight className="w-4 h-4 ml-1" />
                   </Link>
                 </Button>
               </li>
@@ -197,7 +216,7 @@ export function HomePage() {
                 </div>
                 <Button variant="ghost" size="sm" asChild>
                   <Link href="/events">
-                    Details <ChevronRight className="ml-1 h-4 w-4" />
+                    Details <ChevronRight className="w-4 h-4 ml-1" />
                   </Link>
                 </Button>
               </li>
@@ -215,7 +234,7 @@ export function HomePage() {
                 <span>Startup Ecosystem Report 2024</span>
                 <Button variant="ghost" size="sm" asChild>
                   <Link href="/downloads">
-                    Download <Download className="ml-1 h-4 w-4" />
+                    Download <Download className="w-4 h-4 ml-1" />
                   </Link>
                 </Button>
               </li>
@@ -223,7 +242,7 @@ export function HomePage() {
                 <span>Funding Trends Q1 2024</span>
                 <Button variant="ghost" size="sm" asChild>
                   <Link href="/downloads">
-                    Download <Download className="ml-1 h-4 w-4" />
+                    Download <Download className="w-4 h-4 ml-1" />
                   </Link>
                 </Button>
               </li>
@@ -233,8 +252,8 @@ export function HomePage() {
       </section>
 
       {/* Call to Action */}
-      <section className="rounded-lg bg-muted p-6 md:p-12">
-        <div className="mx-auto max-w-3xl text-center">
+      <section className="p-6 rounded-lg bg-muted md:p-12">
+        <div className="max-w-3xl mx-auto text-center">
           <h2 className="mb-4 text-3xl font-bold tracking-tight">
             Join the StartUpSL Community
           </h2>
@@ -244,7 +263,7 @@ export function HomePage() {
           </p>
           <Button size="lg" asChild>
             <Link href="/about">
-              Get Involved <ArrowRight className="ml-2 h-4 w-4" />
+              Get Involved <ArrowRight className="w-4 h-4 ml-2" />
             </Link>
           </Button>
         </div>

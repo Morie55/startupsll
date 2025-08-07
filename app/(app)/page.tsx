@@ -1,5 +1,7 @@
 import { HomePage } from "@/components/home-page";
+import { geDashboardStats } from "../actions/dashboardStat";
 
-export default function Home() {
-  return <HomePage />;
+export default async function Home() {
+  const stats = await geDashboardStats();
+  return <HomePage stats={stats} />;
 }

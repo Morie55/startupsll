@@ -100,7 +100,7 @@ export async function geDashboardStats() {
           ),
         },
         hotCompanys: allCompanies.slice(0, 4),
-        allNewComa: allNewComa.slice(4),
+        newCompany: allCompanies.slice(0, 4),
       })
     );
   } catch (error) {

@@ -49,28 +49,28 @@ export function DashboardPage({ stats }: any) {
         <StatCard
           title="Companies"
           value="934"
-          icon={<Building2 className="h-4 w-4" />}
+          icon={<Building2 className="w-4 h-4" />}
           description="+8% from last month"
           trend="up"
         />
         <StatCard
           title="Rounds"
           value="99"
-          icon={<TrendingUp className="h-4 w-4" />}
+          icon={<TrendingUp className="w-4 h-4" />}
           description="+12% from last month"
           trend="up"
         />
         <StatCard
           title="Employees"
           value="50,403"
-          icon={<Users className="h-4 w-4" />}
+          icon={<Users className="w-4 h-4" />}
           description="+5% from last month"
           trend="up"
         />
         <StatCard
           title="VC Investment"
           value="$42M"
-          icon={<BarChart3 className="h-4 w-4" />}
+          icon={<BarChart3 className="w-4 h-4" />}
           description="+15% from last month"
           trend="up"
         />
@@ -83,7 +83,7 @@ export function DashboardPage({ stats }: any) {
           description={`${stats.companies.change > 0 ? "+" : ""}${
             stats.companies.change
           }% from last month`}
-          icon={<Building2 className="h-4 w-4" />}
+          icon={<Building2 className="w-4 h-4" />}
           trend={stats.companies.change > 0 ? "up" : "down"}
         />
         <StatCard
@@ -92,7 +92,7 @@ export function DashboardPage({ stats }: any) {
           description={`${stats.rounds.change > 0 ? "+" : ""}${
             stats.rounds.change
           }% from last month`}
-          icon={<TrendingUp className="h-4 w-4" />}
+          icon={<TrendingUp className="w-4 h-4" />}
           trend={stats.rounds.change > 0 ? "up" : "down"}
         />
         <StatCard
@@ -101,7 +101,7 @@ export function DashboardPage({ stats }: any) {
           description={`${stats.employees.change > 0 ? "+" : ""}${
             stats.employees.change
           }% from last month`}
-          icon={<Users className="h-4 w-4" />}
+          icon={<Users className="w-4 h-4" />}
           trend={stats.employees.change > 0 ? "up" : "down"}
         />
         <StatCard
@@ -110,7 +110,7 @@ export function DashboardPage({ stats }: any) {
           description={`${stats.vcInvestment.change > 0 ? "+" : ""}${
             stats.vcInvestment.change
           }% from last month`}
-          icon={<BarChart3 className="h-4 w-4" />}
+          icon={<BarChart3 className="w-4 h-4" />}
           trend={stats.vcInvestment.change > 0 ? "up" : "down"}
         />
       </div>
@@ -127,7 +127,7 @@ export function DashboardPage({ stats }: any) {
               </CardDescription>
             </div>
             <Button variant="outline" size="sm">
-              Read More <ChevronRight className="ml-1 h-4 w-4" />
+              Read More <ChevronRight className="w-4 h-4 ml-1" />
             </Button>
           </CardHeader>
           <CardContent>
@@ -147,8 +147,8 @@ export function DashboardPage({ stats }: any) {
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="flex items-start gap-3">
-              <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
-                <Calendar className="h-5 w-5" />
+              <div className="flex items-center justify-center flex-shrink-0 w-10 h-10 rounded-lg bg-primary/10 text-primary">
+                <Calendar className="w-5 h-5" />
               </div>
               <div>
                 <h4 className="text-sm font-medium">Startup Pitch Night</h4>
@@ -158,8 +158,8 @@ export function DashboardPage({ stats }: any) {
               </div>
             </div>
             <div className="flex items-start gap-3">
-              <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
-                <Calendar className="h-5 w-5" />
+              <div className="flex items-center justify-center flex-shrink-0 w-10 h-10 rounded-lg bg-primary/10 text-primary">
+                <Calendar className="w-5 h-5" />
               </div>
               <div>
                 <h4 className="text-sm font-medium">Investor Meetup</h4>
@@ -190,7 +190,7 @@ export function DashboardPage({ stats }: any) {
           <RoundsTable />
         </TabsContent>
         <TabsContent value="new-companies" className="mt-4">
-          <NewCompaniesList />
+          <NewCompaniesList newCompany={stats.newCompany} />
         </TabsContent>
       </Tabs>
 

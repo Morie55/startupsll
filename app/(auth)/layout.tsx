@@ -8,7 +8,7 @@ export default function layout({ children }: { children: React.ReactNode }) {
         {children}
       </div>
       <div className="hidden bg-gray-100 dark:bg-gray-800 md:block">
-        <div className="relative h-full w-full">
+        <div className="relative w-full h-full">
           <Image
             src="/images/placeholder1.jpg?height=720&width=1280"
             alt="Login background"

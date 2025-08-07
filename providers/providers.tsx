@@ -20,7 +20,7 @@ export function Providers({ children }: { children: ReactNode }) {
     if (user && !user?.publicMetadata?.onboardingCompleted) {
       if (pathname !== "/onboarding") {
         router.push("/onboarding");
-        return;
+        // return;
       }
     } else if (user && user?.publicMetadata?.onboardingCompleted) {
       if (pathname === "/onboarding") {
@@ -32,7 +32,7 @@ export function Providers({ children }: { children: ReactNode }) {
         } else {
           router.push(`/companies/${companyId}`);
         }
-        return;
+        // return;
       }
       // If the user is logged in and has completed onboarding, allow access to the current page
       else setRedirecting(false);
