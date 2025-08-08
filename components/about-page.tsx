@@ -93,7 +93,7 @@ const stats = [
 export function AboutPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-white">
-      <div className="container px-4 py-12 mx-auto md:px-6 lg:px-8">
+      <div className="container px-4 py-12 mx-auto md:px-6 lg:px-8 dark:bg-gray-900">
         {/* Header Section */}
         <div className="mb-12 text-center">
           <h1 className="mb-4 text-4xl font-bold tracking-tight text-transparent md:text-5xl bg-gradient-to-r from-slate-900 to-slate-600 bg-clip-text">

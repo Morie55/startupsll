@@ -110,7 +110,6 @@ export default function ClientLayout({
           <div className="flex items-center justify-between gap-4 ml-auto">
             <Button variant="ghost" size="icon" className="relative">
               <NotificationBell />
-
               <span className="sr-only">Notifications</span>
             </Button>
             <ThemeToggle />
