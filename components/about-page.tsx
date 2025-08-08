@@ -55,7 +55,7 @@ const team = [
     name: "Morie Keita",
     role: "Technology Lead",
     image: "/images/Morie_Keita.jpg",
-    bio: "Morie oversees our technology infrastructure and digital initiatives, ensuring scalable solutions for our ecosystem.",
+    bio: "Morie oversees and develop our technology infrastructure and digital initiatives, ensuring scalable solutions for our ecosystem.",
     expertise: ["Technology", "Digital Innovation", "Infrastructure"],
   },
 ];
