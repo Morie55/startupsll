@@ -186,6 +186,9 @@ export async function createCompany(data: any) {
       },
     });
 
+    // / Fetch the updated user to verify changes
+    const updatedUser = await client.users.getUser(userId);
+
     const investors = await Investor.find({
       sectorInterested: { $in: [company.sector] },
     });
@@ -216,7 +219,9 @@ export async function createCompany(data: any) {
     //   });
     // }
 
-    return JSON.parse(JSON.stringify({ success: true, company: company }));
+    return JSON.parse(
+      JSON.stringify({ success: true, company: company, user: updatedUser })
+    );
   } catch (error) {
     console.error("Error creating company:", error);
     return { success: false, error: "Failed to create company" };

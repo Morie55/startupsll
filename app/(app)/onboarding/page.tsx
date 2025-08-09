@@ -1,5 +1,4 @@
 "use client";
-
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -20,7 +19,6 @@ import {
   Users,
 } from "lucide-react";
 import { debounce } from "lodash";
-
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -58,7 +56,6 @@ import {
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Progress } from "@/components/ui/progress";
-
 import { toast } from "@/components/ui/use-toast";
 import { sectorsData } from "@/data/sectors";
 import { useCompany } from "@/contexts/company-context";
@@ -76,7 +73,9 @@ import {
   saveCompanyProgress,
 } from "@/app/actions/company-actions";
 import { Uploader } from "@/components/Uploader";
+
 const investmentTypes: any = [];
+
 // Enhanced Company form schema with all new fields
 const companyFormSchema = z.object({
   // Step 1: Basic Information
@@ -88,7 +87,6 @@ const companyFormSchema = z.object({
   otherSector: z.string().optional(),
   type: z.string().optional(),
   stage: z.string().optional(),
-
   // Step 2: Contact Information
   email: z.string().email("Invalid email address"),
   phone: z.string().min(5, "Phone number is too short").optional(),
@@ -102,7 +100,6 @@ const companyFormSchema = z.object({
       })
     )
     .optional(),
-
   // Step 3: Company Details
   location: z.string().optional(),
   foundedAt: z.date().optional(),
@@ -117,21 +114,18 @@ const companyFormSchema = z.object({
     .max(500, "Mission statement is too long")
     .optional(),
   employeesRange: z.string().optional(),
-
   // Step 4: Funding Information
   fundingStatus: z.string().optional(),
   amountRaised: z.number().nonnegative("Amount must be positive").optional(),
   fundingNeeded: z.number().nonnegative("Amount must be positive").optional(),
   fundingDocuments: z.string().optional(),
   pitchDeck: z.string().optional(),
-
   // Step 5: General Business Information
   headOfficeAddress: z.string().min(1, "Head office address is required"),
   businessModel: z.enum(["B2B", "B2C", "B2G", "Other"]),
   otherBusinessModel: z.string().optional(),
   isYouthLed: z.enum(["Yes", "No"]),
   isWomanLed: z.enum(["Yes", "No"]),
-
   // Step 6: Ownership & Management
   founderName: z.string().min(1, "Founder name is required"),
   founderGender: z.enum(["Male", "Female", "Prefer not to say"]),
@@ -157,9 +151,7 @@ const companyFormSchema = z.object({
     "No, I do not require",
   ]),
   hasIntellectualProperty: z.enum(["Yes", "No"]),
-
   // Step 7: Financial & Banking
-
   annualTurnoverBefore: z.string().min(1, "Annual turnover before is required"),
   annualTurnoverCurrent: z
     .string()
@@ -182,7 +174,6 @@ const companyFormSchema = z.object({
   ),
   otherExternalFunding: z.string().optional(),
   keepsFinancialRecords: z.enum(["Yes", "No", "Not Yet"]),
-
   // Step 8: Innovation & Digital Tools
   usesDigitalTools: z.enum(["Yes", "No"]),
   digitalTools: z
@@ -201,7 +192,6 @@ const companyFormSchema = z.object({
   otherDigitalTools: z.string().optional(),
   isInnovative: z.enum(["Yes", "No"]),
   innovationExplanation: z.string().optional(),
-
   // Step 9: Challenges & Growth
   businessChallenges: z.array(
     z.enum([
@@ -221,17 +211,14 @@ const companyFormSchema = z.object({
     .min(1, "Please describe the support your business needs"),
   planningExpansion: z.enum(["Yes", "No"]),
   expansionPlans: z.string().optional(),
-
   // Step 10: Social & Environmental Impact
   employsVulnerableGroups: z.enum(["Yes", "No"]),
   addressesEnvironmentalSustainability: z.enum(["Yes", "No"]),
   impactInitiatives: z.string().optional(),
-
   // Step 11: Consent & Follow Up
   joinEcosystemPrograms: z.enum(["Yes", "No"]),
   consentToDataUsage: z.enum(["Yes", "No"]),
   additionalComments: z.string().optional(),
-
   // Registration verification fields
   isRegistered: z.enum(["Yes", "No"]),
   registrationNumberInput: z.string().optional(),
@@ -248,7 +235,6 @@ const investorFormSchema = z.object({
   name: z.string().min(2, "Investor name must be at least 2 characters"),
   type: z.string().optional(),
   sectorInterested: z.array(z.string()).min(1, "Select at least one sector"),
-
   // Step 2: Contact Information
   email: z.string().email("Invalid email address").optional(),
   phone: z.string().optional(),
@@ -262,7 +248,6 @@ const investorFormSchema = z.object({
       })
     )
     .optional(),
-
   // Step 3: Investment Details
   location: z.string().optional(),
   foundedAt: z.date().optional(),
@@ -270,7 +255,6 @@ const investorFormSchema = z.object({
   description: z.string().optional(),
   fundingCapacity: z.string().optional(),
   stage: z.string().optional(),
-
   // Step 4: Documents & Additional Info
   amountRaised: z.number().nonnegative().optional(),
   businessRegistrationDocuments: z.string().optional(),
@@ -301,12 +285,15 @@ export default function OnboardingPage() {
   const { addCompany, loading: companyLoading } = useCompany();
   const { addInvestor, loading: investorLoading } = useInvestor();
   const fileInputRef = useRef<HTMLInputElement>(null);
-
   const [entityType, setEntityType] = useState<EntityType | null>(null);
   const [step, setStep] = useState(0); // 0 = entity selection, 1+ = form steps
   const [socialLinks, setSocialLinks] = useState([{ name: "", link: "" }]);
   const [selectedSectors, setSelectedSectors] = useState<string[]>([]);
-  const [totalSteps] = useState(12); // Increased to 12 steps for company form
+
+  // Fixed: Define total steps for each entity type
+  const COMPANY_TOTAL_STEPS = 12;
+  const INVESTOR_TOTAL_STEPS = 4;
+
   const [lastSaved, setLastSaved] = useState<Date | null>(null);
   const [isSaving, setIsSaving] = useState(false);
   const [previewMode, setPreviewMode] = useState(false);
@@ -314,7 +301,9 @@ export default function OnboardingPage() {
 
   // Load saved progress on component mount
   useEffect(() => {
-    loadProgress();
+    if (user?.id) {
+      loadProgress();
+    }
   }, [user]);
 
   // Company form with enhanced default values
@@ -421,18 +410,36 @@ export default function OnboardingPage() {
   useEffect(() => {
     if (entityType === "company") {
       // Calculate progress based on current step (step 0 is entity selection)
-      const progress = step === 0 ? 0 : Math.round((step / totalSteps) * 100);
+      const progress =
+        step === 0 ? 0 : Math.round((step / COMPANY_TOTAL_STEPS) * 100);
       setFormProgress(progress);
     } else if (entityType === "investor") {
       // For investor form (4 steps)
-      const progress = step === 0 ? 0 : Math.round((step / 4) * 100);
+      const progress =
+        step === 0 ? 0 : Math.round((step / INVESTOR_TOTAL_STEPS) * 100);
       setFormProgress(progress);
     }
-  }, [step, totalSteps, entityType]);
+  }, [step, entityType]);
 
   const selectEntityType = (type: EntityType) => {
     setEntityType(type);
     setStep(1); // Move to first step of the form
+  };
+
+  // Fixed: Helper function to determine if we're on the final step
+  const isOnFinalStep = () => {
+    console.log("Checking final step:", {
+      entityType,
+      step,
+      COMPANY_TOTAL_STEPS,
+      INVESTOR_TOTAL_STEPS,
+    });
+    if (entityType === "company") {
+      return step === COMPANY_TOTAL_STEPS;
+    } else if (entityType === "investor") {
+      return step === INVESTOR_TOTAL_STEPS;
+    }
+    return false;
   };
 
   const nextStep = () => {
@@ -599,8 +606,11 @@ export default function OnboardingPage() {
             }
           });
       } else {
-        setStep(Math.min(step + 1, totalSteps));
-        saveProgress();
+        // Fixed: Don't increment step beyond the final step
+        if (step < COMPANY_TOTAL_STEPS) {
+          setStep(step + 1);
+          saveProgress();
+        }
       }
     } else if (entityType === "investor") {
       if (step === 1) {
@@ -639,8 +649,11 @@ export default function OnboardingPage() {
             }
           });
       } else {
-        setStep(Math.min(step + 1, 4)); // Investor form has 4 steps
-        saveProgress();
+        // Fixed: Don't increment step beyond the final step
+        if (step < INVESTOR_TOTAL_STEPS) {
+          setStep(step + 1);
+          saveProgress();
+        }
       }
     }
   };
@@ -667,7 +680,6 @@ export default function OnboardingPage() {
     const updatedLinks = [...socialLinks];
     updatedLinks[index][field] = value;
     setSocialLinks(updatedLinks);
-
     if (entityType === "company") {
       companyForm.setValue("socialLinks", updatedLinks);
     } else if (entityType === "investor") {
@@ -679,7 +691,6 @@ export default function OnboardingPage() {
     const updatedLinks = [...socialLinks];
     updatedLinks.splice(index, 1);
     setSocialLinks(updatedLinks);
-
     if (entityType === "company") {
       companyForm.setValue("socialLinks", updatedLinks);
     } else if (entityType === "investor") {
@@ -707,14 +718,12 @@ export default function OnboardingPage() {
   const saveProgressDebounced = debounce(() => {
     // saveProgress();
   }, 1500);
-  // Save after 1.5 seconds of inactivity
 
   // Auto-save company form changes
   useEffect(() => {
     if (entityType === "company" && step > 0) {
       saveProgressDebounced();
     }
-
     return () => {
       saveProgressDebounced.cancel();
     };
@@ -725,7 +734,6 @@ export default function OnboardingPage() {
     if (entityType === "investor" && step > 0) {
       saveProgressDebounced();
     }
-
     return () => {
       saveProgressDebounced.cancel();
     };
@@ -736,13 +744,14 @@ export default function OnboardingPage() {
     if (step > 0) {
       saveProgressDebounced();
     }
-
     return () => {
       saveProgressDebounced.cancel();
     };
   }, [selectedSectors, socialLinks, step]);
 
   const saveProgress = async () => {
+    if (!user?.id) return;
+
     try {
       setIsSaving(true);
       const cdata: any = {
@@ -752,29 +761,17 @@ export default function OnboardingPage() {
         selectedSectors: selectedSectors,
         socialLinks: socialLinks,
       };
-
       // Save form data based on entity type
       if (entityType === "company") {
         cdata.companyData = JSON.stringify(companyForm.getValues());
       } else if (entityType === "investor") {
         cdata.investorData = JSON.stringify(investorForm.getValues());
       }
-
       await saveCompanyProgress(user?.id!, cdata);
-
       // Update last saved timestamp
       const now = new Date();
       setLastSaved(now);
-
-      // Only show toast for manual saves
-      // if (saveProgressDebounced.flush) {
-      //   toast({
-      //     title: "Progress saved",
-      //     description: "You can continue from this point later.",
-      //   });
-      // }
       setIsSaving(false);
-      // setTimeout(() => setIsSaving(false), 500);
     } catch (error) {
       console.error("Error saving progress:", error);
       setIsSaving(false);
@@ -787,47 +784,36 @@ export default function OnboardingPage() {
   };
 
   const loadProgress = async () => {
-    const companyProgress = await loadCompanyProgress(user?.id!);
+    if (!user?.id) return;
 
     try {
-      // Load entity type
-      // const savedEntityType = localStorage.getItem("onboarding_entityType");
+      const companyProgress = await loadCompanyProgress(user?.id!);
+
       const savedEntityType = companyProgress.entityType;
       if (savedEntityType) {
         setEntityType(savedEntityType as EntityType);
       }
 
-      // Load current step
-      // const savedStep = localStorage.getItem("onboarding_step");
       const savedStep = companyProgress.step;
       if (savedStep) {
         setStep(savedStep);
       }
 
-      // Load selected sectors for investor
-      // const savedSectors = localStorage.getItem("onboarding_selectedSectors");
       const savedSectors = companyProgress.selectedSectors;
       if (savedSectors) {
-        // setSelectedSectors(JSON.parse(savedSectors));
         setSelectedSectors(savedSectors);
       }
 
-      // Load social links
-      // const savedSocialLinks = localStorage.getItem("onboarding_socialLinks");
       const savedSocialLinks = companyProgress.socialLinks;
       if (savedSocialLinks) {
-        // setSocialLinks(JSON.parse(savedSocialLinks));
         setSocialLinks(savedSocialLinks);
       }
 
       // Load form data based on entity type
       if (savedEntityType === "company") {
-        // const savedCompanyData = localStorage.getItem("onboarding_companyData");
         const savedCompanyData = companyProgress.companyData;
         if (savedCompanyData) {
           const parsedData = JSON.parse(savedCompanyData);
-          // const parsedData = savedCompanyData;
-
           // Handle date conversion for foundedAt and founderDob
           if (parsedData.foundedAt) {
             parsedData.foundedAt = new Date(parsedData.foundedAt);
@@ -835,22 +821,16 @@ export default function OnboardingPage() {
           if (parsedData.founderDob) {
             parsedData.founderDob = new Date(parsedData.founderDob);
           }
-
           companyForm.reset(parsedData);
         }
       } else if (savedEntityType === "investor") {
-        // const savedInvestorData = localStorage.getItem(
-        //   "onboarding_investorData"
-        // );
         const savedInvestorData = companyProgress.investorData;
         if (savedInvestorData) {
           const parsedData = JSON.parse(savedInvestorData);
-
           // Handle date conversion for foundedAt
           if (parsedData.foundedAt) {
             parsedData.foundedAt = new Date(parsedData.foundedAt);
           }
-
           investorForm.reset(parsedData);
         }
       }
@@ -864,11 +844,20 @@ export default function OnboardingPage() {
     }
   };
 
+  // Fixed: Improved onSubmit function with better error handling and navigation
   const onSubmit = async (data: any) => {
+    console.log("=== FORM SUBMISSION STARTED ===");
+    console.log("Entity Type:", entityType);
+    console.log("Current Step:", step);
+    console.log("Is Final Step:", isOnFinalStep());
+    console.log("Form Data:", data);
+
     try {
       // Update social links in the form data
       if (entityType === "company") {
         data.socialLinks = socialLinks.filter((link) => link.name && link.link);
+
+        console.log("Submitting company data...");
 
         // Add company using context
         const result: any = await addCompany({
@@ -883,15 +872,40 @@ export default function OnboardingPage() {
             data.addressesEnvironmentalSustainability === "Yes",
           joinEcosystemPrograms: data.joinEcosystemPrograms === "Yes",
         });
-        if (result.success) {
-          router.refresh();
+
+        console.log("Company creation result:", result);
+
+        if (result?.success) {
+          console.log(
+            "Company created successfully, navigating to:",
+            `/companies/${result?.companyId}`
+          );
+          await user?.reload();
+          // Clear saved progress since form is completed
+          clearProgress();
+
+          // Show success toast
+          toast({
+            title: "Success!",
+            description: "Company profile created successfully",
+          });
+
+          // Navigate to company details page
+
           router.push(`/companies/${result?.companyId}`);
         } else {
-          alert("failrf");
+          console.error("Company creation failed:", result?.error);
+          toast({
+            title: "Error",
+            description: result?.error || "Failed to create company profile",
+            variant: "destructive",
+          });
         }
       } else if (entityType === "investor") {
         data.socialLinks = socialLinks.filter((link) => link.name && link.link);
         data.sectorInterested = selectedSectors;
+
+        console.log("Submitting investor data...");
 
         // Add investor using context
         const result: any = await addInvestor({
@@ -899,13 +913,30 @@ export default function OnboardingPage() {
           userId: user?.id,
         });
 
-        if (result.success) {
-          router.refresh();
-          router.push(`/investors/${result.investorId}`);
+        console.log("Investor creation result:", result);
+
+        if (result?.success) {
+          console.log(
+            "Investor created successfully, navigating to:",
+            `/investors/${result?.investorId}`
+          );
+          await user?.reload();
+          // Clear saved progress since form is completed
+          clearProgress();
+
+          // Show success toast
+          toast({
+            title: "Success!",
+            description: "Investor profile created successfully",
+          });
+
+          // Navigate to investor details page
+          router.push(`/investors/${result?.investorId}`);
         } else {
+          console.error("Investor creation failed:", result?.error);
           toast({
             title: "Error",
-            description: result.error || "Failed to create investor profile",
+            description: result?.error || "Failed to create investor profile",
             variant: "destructive",
           });
         }
@@ -914,9 +945,53 @@ export default function OnboardingPage() {
       console.error("Error submitting form:", error);
       toast({
         title: "Error",
-        description: "An unexpected error occurred",
+        description: "An unexpected error occurred while submitting the form",
         variant: "destructive",
       });
+    }
+  };
+
+  // Handle Complete Profile button click
+  const handleCompleteProfile = async () => {
+    console.log("=== COMPLETE PROFILE BUTTON CLICKED ===");
+    console.log("Entity Type:", entityType);
+    console.log("Current Step:", step);
+    console.log("Is Final Step:", isOnFinalStep());
+
+    if (entityType === "company") {
+      console.log("Triggering company form submission...");
+      const isValid = await companyForm.trigger();
+      console.log("Form validation result:", isValid);
+
+      if (isValid) {
+        const formData = companyForm.getValues();
+        console.log("Form data is valid, submitting...");
+        await onSubmit(formData);
+      } else {
+        console.log("Form validation failed:", companyForm.formState.errors);
+        toast({
+          title: "Validation Error",
+          description: "Please fill in all required fields correctly",
+          variant: "destructive",
+        });
+      }
+    } else if (entityType === "investor") {
+      console.log("Triggering investor form submission...");
+      const isValid = await investorForm.trigger();
+      console.log("Form validation result:", isValid);
+
+      if (isValid) {
+        const formData = investorForm.getValues();
+        console.log("Form data is valid, submitting...");
+        await onSubmit(formData);
+      } else {
+        console.log("Form validation failed:", investorForm.formState.errors);
+        toast({
+          title: "Validation Error",
+          description: "Please fill in all required fields correctly",
+          variant: "destructive",
+        });
+      }
     }
   };
 
@@ -1021,6 +1096,16 @@ export default function OnboardingPage() {
 
   const isLoading = companyLoading || investorLoading;
 
+  // Debug logging
+  console.log("Current state:", {
+    entityType,
+    step,
+    isOnFinalStep: isOnFinalStep(),
+    COMPANY_TOTAL_STEPS,
+    INVESTOR_TOTAL_STEPS,
+    isLoading,
+  });
+
   return (
     <div className="py-10">
       <div className="p-4 sm:p-6 lg:p-8">
@@ -1052,7 +1137,6 @@ export default function OnboardingPage() {
                     </p>
                   </CardContent>
                 </Card>
-
                 <Card
                   className={cn(
                     "cursor-pointer transition-all hover:border-primary",
@@ -1085,26 +1169,27 @@ export default function OnboardingPage() {
                 Let's get to know your {entityType} better. This information
                 will help us tailor our services to your needs.
               </p>
-
               {/* Form progress */}
               <div className="mt-4">
                 <div className="flex items-center justify-between">
                   <span className="text-sm font-medium">
                     {entityType === "company"
-                      ? `Step ${step} of ${totalSteps}`
+                      ? `Step ${step} of ${COMPANY_TOTAL_STEPS}`
                       : entityType === "investor"
-                      ? `Step ${step} of 4`
+                      ? `Step ${step} of ${INVESTOR_TOTAL_STEPS}`
                       : ""}
                   </span>
                   <span className="text-sm font-medium">{formProgress}%</span>
                 </div>
                 <Progress value={formProgress} className="h-2 mt-2" />
               </div>
-
               {/* Progress indicator */}
               <div className="justify-between hidden mt-8 md:flex">
                 {Array.from({
-                  length: entityType === "company" ? 12 : 4,
+                  length:
+                    entityType === "company"
+                      ? COMPANY_TOTAL_STEPS
+                      : INVESTOR_TOTAL_STEPS,
                 }).map((_, index) => (
                   <div key={index} className="flex flex-col items-center">
                     <div
@@ -1166,16 +1251,17 @@ export default function OnboardingPage() {
                   </div>
                 ))}
               </div>
-
               {/* Mobile step indicator */}
               <div className="flex items-center justify-between mt-4 md:hidden">
                 <span className="text-sm font-medium">
-                  Step {step} of {entityType === "company" ? totalSteps : 4}
+                  Step {step} of{" "}
+                  {entityType === "company"
+                    ? COMPANY_TOTAL_STEPS
+                    : INVESTOR_TOTAL_STEPS}
                 </span>
                 <span className="text-sm font-medium">{getStepTitle()}</span>
               </div>
             </div>
-
             <Card>
               <CardHeader>
                 <CardTitle>{getStepTitle()}</CardTitle>
@@ -1184,10 +1270,7 @@ export default function OnboardingPage() {
               <CardContent>
                 {/* Company Form Steps */}
                 {entityType === "company" && (
-                  <form
-                    onSubmit={companyForm.handleSubmit(onSubmit)}
-                    className="space-y-6"
-                  >
+                  <form className="space-y-6">
                     {/* Step 1: Registration Verification */}
                     {step === 1 && (
                       <>
@@ -1222,7 +1305,6 @@ export default function OnboardingPage() {
                               </div>
                             </RadioGroup>
                           </div>
-
                           {companyForm.watch("isRegistered") === "No" && (
                             <Alert className="border-red-200 bg-red-50">
                               <Info className="w-4 h-4 text-red-600" />
@@ -1234,7 +1316,6 @@ export default function OnboardingPage() {
                               </AlertDescription>
                             </Alert>
                           )}
-
                           {companyForm.watch("isRegistered") === "Yes" && (
                             <div className="space-y-2">
                               <Label htmlFor="registrationNumberInput">
@@ -1262,7 +1343,6 @@ export default function OnboardingPage() {
                         </div>
                       </>
                     )}
-
                     {/* Step 2: Basic Information */}
                     {step === 2 && (
                       <>
@@ -1301,7 +1381,6 @@ export default function OnboardingPage() {
                               </p>
                             )}
                           </div>
-
                           <div className="space-y-2">
                             <Label htmlFor="sector">
                               Sector <span className="text-red-500">*</span>
@@ -1333,7 +1412,6 @@ export default function OnboardingPage() {
                               </p>
                             )}
                           </div>
-
                           {selectedSector === "Other" && (
                             <div className="space-y-2">
                               <Label htmlFor="otherSector">
@@ -1355,7 +1433,6 @@ export default function OnboardingPage() {
                               )}
                             </div>
                           )}
-
                           <div className="space-y-2">
                             <Label htmlFor="type">Company Type</Label>
                             <Select
@@ -1376,7 +1453,6 @@ export default function OnboardingPage() {
                               </SelectContent>
                             </Select>
                           </div>
-
                           <div className="space-y-2">
                             <Label htmlFor="stage">Company Stage</Label>
                             <Select
@@ -1405,7 +1481,6 @@ export default function OnboardingPage() {
                         </div>
                       </>
                     )}
-
                     {/* Step 3: Contact Information */}
                     {step === 3 && (
                       <>
@@ -1430,7 +1505,6 @@ export default function OnboardingPage() {
                               </p>
                             )}
                           </div>
-
                           <div className="space-y-2">
                             <Label htmlFor="phone">Phone Number</Label>
                             <div className="flex items-center gap-2">
@@ -1447,7 +1521,6 @@ export default function OnboardingPage() {
                               </p>
                             )}
                           </div>
-
                           <div className="space-y-2">
                             <Label htmlFor="address">Address</Label>
                             <div className="flex items-center gap-2">
@@ -1464,7 +1537,6 @@ export default function OnboardingPage() {
                               </p>
                             )}
                           </div>
-
                           <div className="space-y-2">
                             <Label htmlFor="website">Website</Label>
                             <div className="flex items-center gap-2">
@@ -1481,7 +1553,6 @@ export default function OnboardingPage() {
                               </p>
                             )}
                           </div>
-
                           <div className="space-y-2">
                             <Label>Social Links</Label>
                             {socialLinks.map((link, index) => (
@@ -1550,7 +1621,6 @@ export default function OnboardingPage() {
                         </div>
                       </>
                     )}
-
                     {/* Step 4: Company Details */}
                     {step === 4 && (
                       <>
@@ -1563,14 +1633,13 @@ export default function OnboardingPage() {
                               placeholder="City, Country"
                             />
                           </div>
-
                           <div className="space-y-2">
                             <Label htmlFor="foundedAt">Founded Date</Label>
                             <Popover>
                               <PopoverTrigger asChild>
                                 <Button
                                   variant="outline"
-                                  className="justify-start w-full font-normal text-left"
+                                  className="justify-start w-full font-normal text-left bg-transparent"
                                 >
                                   <CalendarIcon className="w-4 h-4 mr-2" />
                                   {companyForm.getValues("foundedAt") ? (
@@ -1603,7 +1672,6 @@ export default function OnboardingPage() {
                               </PopoverContent>
                             </Popover>
                           </div>
-
                           <div className="space-y-2">
                             <Label htmlFor="registrationNumber">
                               Registration Number
@@ -1614,7 +1682,6 @@ export default function OnboardingPage() {
                               placeholder="Company registration number"
                             />
                           </div>
-
                           <div className="space-y-2">
                             <div className="flex items-center gap-2">
                               <Label htmlFor="description">
@@ -1656,7 +1723,6 @@ export default function OnboardingPage() {
                               </p>
                             </div>
                           </div>
-
                           <div className="space-y-2">
                             <Label htmlFor="missionStatement">
                               Mission Statement
@@ -1682,7 +1748,6 @@ export default function OnboardingPage() {
                               </p>
                             </div>
                           </div>
-
                           <div className="space-y-2">
                             <Label htmlFor="employeesRange">
                               Number of Employees
@@ -1713,7 +1778,6 @@ export default function OnboardingPage() {
                         </div>
                       </>
                     )}
-
                     {/* Step 5: Funding Information */}
                     {step === 5 && (
                       <>
@@ -1745,7 +1809,6 @@ export default function OnboardingPage() {
                               </SelectContent>
                             </Select>
                           </div>
-
                           <div className="space-y-2">
                             <Label htmlFor="amountRaised">
                               Amount Raised (USD)
@@ -1768,7 +1831,6 @@ export default function OnboardingPage() {
                               </p>
                             )}
                           </div>
-
                           <div className="space-y-2">
                             <Label htmlFor="fundingNeeded">
                               Funding Needed (USD)
@@ -1791,42 +1853,14 @@ export default function OnboardingPage() {
                               </p>
                             )}
                           </div>
-
                           <div className="space-y-2">
                             <Label htmlFor="fundingDocuments">
                               Funding Documents (Investment Plan) .pdf
                             </Label>
-                            {/* <Input
-                              id="fundingDocuments"
-                              type="file"
-                              className="cursor-pointer"
-                              accept=".pdf"
-                              onChange={(e) => {
-                                if (e.target.files?.[0]) {
-                                  // In a real app, you'd upload this to storage and save the URL
-                                  companyForm.setValue(
-                                    "fundingDocuments",
-                                    e.target.files[0].name
-                                  );
-                                }
-                              }}
-                            /> */}
                             <Uploader
                               multiple={false}
                               accept={{
-                                // "image/*": [],
-                                // "video/*": []
                                 "application/pdf": [],
-                                // "application/msword": [],
-                                // "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
-                                //   [],
-                                // "application/vnd.ms-excel": [], // .xls
-                                // "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet":
-                                //   [], // .xlsx
-                                // "application/vnd.ms-powerpoint": [], // .ppt
-                                // "application/vnd.openxmlformats-officedocument.presentationml.presentation":
-                                // [], // .pptx
-                                // "*/*": []
                               }}
                               maxSizeMB={10}
                               uploadTitle={
@@ -1836,45 +1870,20 @@ export default function OnboardingPage() {
                               onUploadComplete={(urls: any) =>
                                 companyForm.setValue("fundingDocuments", urls)
                               }
-                              // handleFundingDocChange(urls)
                             />
                             <p className="text-xs text-muted-foreground">
                               PDF files only
                             </p>
                           </div>
-
                           <div className="space-y-2">
                             <Label htmlFor="pitchDeck">Pitch Deck</Label>
-                            {/* <Input
-                              id="pitchDeck"
-                              type="file"
-                              className="cursor-pointer"
-                              onChange={(e) => {
-                                if (e.target.files?.[0]) {
-                                  // In a real app, you'd upload this to storage and save the URL
-                                  companyForm.setValue(
-                                    "pitchDeck",
-                                    e.target.files[0].name
-                                  );
-                                }
-                              }}
-                            /> */}
                             <Uploader
                               multiple={false}
                               accept={{
-                                // "image/*": [],
-                                // "video/*": []
                                 "application/pdf": [],
-                                // "application/msword": [], // .doc
-                                // "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
-                                //   [], // .docx
-                                // "application/vnd.ms-excel": [], // .xls
-                                // "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet":
-                                //   [], // .xlsx
                                 "application/vnd.ms-powerpoint": [], // .ppt
                                 "application/vnd.openxmlformats-officedocument.presentationml.presentation":
                                   [], // .pptx
-                                // "*/*": []
                               }}
                               maxSizeMB={20}
                               uploadTitle={
@@ -1892,7 +1901,6 @@ export default function OnboardingPage() {
                         </div>
                       </>
                     )}
-
                     {/* Step 6: General Business Information */}
                     {step === 6 && (
                       <>
@@ -1916,7 +1924,6 @@ export default function OnboardingPage() {
                               </p>
                             )}
                           </div>
-
                           <div className="space-y-2">
                             <Label htmlFor="businessModel">
                               What is your business model{" "}
@@ -1965,7 +1972,6 @@ export default function OnboardingPage() {
                               </p>
                             )}
                           </div>
-
                           {selectedBusinessModel === "Other" && (
                             <div className="space-y-2">
                               <Label htmlFor="otherBusinessModel">
@@ -1979,7 +1985,6 @@ export default function OnboardingPage() {
                               />
                             </div>
                           )}
-
                           <div className="space-y-2">
                             <Label htmlFor="isYouthLed">
                               Is your business youth-led (under 35)?{" "}
@@ -2008,7 +2013,6 @@ export default function OnboardingPage() {
                               </div>
                             </RadioGroup>
                           </div>
-
                           <div className="space-y-2">
                             <Label htmlFor="isWomanLed">
                               Is your business woman-led?{" "}
@@ -2040,7 +2044,6 @@ export default function OnboardingPage() {
                         </div>
                       </>
                     )}
-
                     {/* Step 7: Ownership & Management */}
                     {step === 7 && (
                       <>
@@ -2064,7 +2067,6 @@ export default function OnboardingPage() {
                               </p>
                             )}
                           </div>
-
                           <div className="space-y-2">
                             <Label htmlFor="founderGender">
                               Gender of Founder{" "}
@@ -2107,7 +2109,6 @@ export default function OnboardingPage() {
                               </div>
                             </RadioGroup>
                           </div>
-
                           <div className="space-y-2">
                             <Label htmlFor="founderDob">
                               Date of Birth{" "}
@@ -2117,7 +2118,7 @@ export default function OnboardingPage() {
                               <PopoverTrigger asChild>
                                 <Button
                                   variant="outline"
-                                  className="justify-start w-full font-normal text-left"
+                                  className="justify-start w-full font-normal text-left bg-transparent"
                                 >
                                   <CalendarIcon className="w-4 h-4 mr-2" />
                                   {companyForm.getValues("founderDob") ? (
@@ -2158,7 +2159,6 @@ export default function OnboardingPage() {
                               </p>
                             )}
                           </div>
-
                           <div className="space-y-2">
                             <Label htmlFor="founderEducation">
                               Educational Background of Founder{" "}
@@ -2202,7 +2202,6 @@ export default function OnboardingPage() {
                               </SelectContent>
                             </Select>
                           </div>
-
                           <div className="space-y-2">
                             <Label htmlFor="taxCompliance">
                               Tax and Nassit Compliance{" "}
@@ -2295,7 +2294,6 @@ export default function OnboardingPage() {
                               </div>
                             </div>
                           </div>
-
                           <div className="space-y-2">
                             <Label htmlFor="sectorLicenses">
                               Do you hold / require sector specific licenses?{" "}
@@ -2345,7 +2343,6 @@ export default function OnboardingPage() {
                               </div>
                             </RadioGroup>
                           </div>
-
                           <div className="space-y-2">
                             <Label htmlFor="hasIntellectualProperty">
                               Do you hold any Intellectual Property Rights
@@ -2377,7 +2374,6 @@ export default function OnboardingPage() {
                         </div>
                       </>
                     )}
-
                     {/* Step 8: Financial & Banking */}
                     {step === 8 && (
                       <>
@@ -2387,7 +2383,6 @@ export default function OnboardingPage() {
                               Annual Turnover Year Before{" "}
                               <span className="text-red-500">*</span>
                             </Label>
-
                             <Select
                               onValueChange={(value) =>
                                 companyForm.setValue(
@@ -2420,7 +2415,6 @@ export default function OnboardingPage() {
                               </p>
                             )}
                           </div>
-
                           <div className="space-y-2">
                             <Label htmlFor="annualTurnoverCurrent">
                               Annual Turnover (Estimate){" "}
@@ -2458,7 +2452,6 @@ export default function OnboardingPage() {
                               </p>
                             )}
                           </div>
-
                           <div className="space-y-2">
                             <Label htmlFor="annualTurnoverNext">
                               Annual turnover in the next two years (Estimate){" "}
@@ -2496,7 +2489,6 @@ export default function OnboardingPage() {
                               </p>
                             )}
                           </div>
-
                           <div className="space-y-2">
                             <Label htmlFor="hasBusinessBankAccount">
                               Do you have a business bank account?{" "}
@@ -2530,7 +2522,6 @@ export default function OnboardingPage() {
                               </div>
                             </RadioGroup>
                           </div>
-
                           <div className="space-y-2">
                             <Label htmlFor="externalFunding">
                               Have you accessed any external funding?{" "}
@@ -2757,7 +2748,6 @@ export default function OnboardingPage() {
                               </div>
                             </div>
                           </div>
-
                           {externalFundingValues?.includes("Other") && (
                             <div className="space-y-2">
                               <Label htmlFor="otherExternalFunding">
@@ -2772,7 +2762,6 @@ export default function OnboardingPage() {
                               />
                             </div>
                           )}
-
                           <div className="space-y-2">
                             <Label htmlFor="keepsFinancialRecords">
                               Do you keep financial records?{" "}
@@ -2820,7 +2809,6 @@ export default function OnboardingPage() {
                         </div>
                       </>
                     )}
-
                     {/* Step 9: Innovation & Digital Tools */}
                     {step === 9 && (
                       <>
@@ -2858,7 +2846,6 @@ export default function OnboardingPage() {
                               </div>
                             </RadioGroup>
                           </div>
-
                           {usesDigitalToolsValue === "Yes" && (
                             <div className="space-y-2">
                               <Label htmlFor="digitalTools">
@@ -3064,7 +3051,6 @@ export default function OnboardingPage() {
                               </div>
                             </div>
                           )}
-
                           {usesDigitalToolsValue === "Yes" &&
                             digitalToolsValues?.includes("Other") && (
                               <div className="space-y-2">
@@ -3078,7 +3064,6 @@ export default function OnboardingPage() {
                                 />
                               </div>
                             )}
-
                           <div className="space-y-2">
                             <Label htmlFor="isInnovative">
                               Do you consider your business innovative?{" "}
@@ -3109,7 +3094,6 @@ export default function OnboardingPage() {
                               </div>
                             </RadioGroup>
                           </div>
-
                           {isInnovativeValue === "Yes" && (
                             <div className="space-y-2">
                               <Label htmlFor="innovationExplanation">
@@ -3138,7 +3122,6 @@ export default function OnboardingPage() {
                         </div>
                       </>
                     )}
-
                     {/* Step 10: Challenges & Growth */}
                     {step === 10 && (
                       <>
@@ -3385,7 +3368,6 @@ export default function OnboardingPage() {
                               </div>
                             </div>
                           </div>
-
                           {businessChallengesValues?.includes("Other") && (
                             <div className="space-y-2">
                               <Label htmlFor="otherBusinessChallenges">
@@ -3400,7 +3382,6 @@ export default function OnboardingPage() {
                               />
                             </div>
                           )}
-
                           <div className="space-y-2">
                             <Label htmlFor="supportNeeded">
                               What support does your business need?{" "}
@@ -3421,7 +3402,6 @@ export default function OnboardingPage() {
                               </p>
                             )}
                           </div>
-
                           <div className="space-y-2">
                             <Label htmlFor="planningExpansion">
                               Do you plan to expand in the next 12 months?{" "}
@@ -3452,7 +3432,6 @@ export default function OnboardingPage() {
                               </div>
                             </RadioGroup>
                           </div>
-
                           {planningExpansionValue === "Yes" && (
                             <div className="space-y-2">
                               <Label htmlFor="expansionPlans">
@@ -3478,7 +3457,6 @@ export default function OnboardingPage() {
                         </div>
                       </>
                     )}
-
                     {/* Step 11: Social & Environmental Impact */}
                     {step === 11 && (
                       <>
@@ -3514,7 +3492,6 @@ export default function OnboardingPage() {
                               </div>
                             </RadioGroup>
                           </div>
-
                           <div className="space-y-2">
                             <Label htmlFor="addressesEnvironmentalSustainability">
                               Do you actively address environmental
@@ -3549,7 +3526,6 @@ export default function OnboardingPage() {
                               </div>
                             </RadioGroup>
                           </div>
-
                           <div className="space-y-2">
                             <Label htmlFor="impactInitiatives">
                               Please describe any impact initiatives{" "}
@@ -3573,7 +3549,6 @@ export default function OnboardingPage() {
                         </div>
                       </>
                     )}
-
                     {/* Step 12: Consent & Follow Up */}
                     {step === 12 && (
                       <>
@@ -3609,7 +3584,6 @@ export default function OnboardingPage() {
                               </div>
                             </RadioGroup>
                           </div>
-
                           <div className="space-y-2">
                             <Label htmlFor="consentToDataUsage">
                               Do you give us consent for storing and analyzing
@@ -3638,7 +3612,6 @@ export default function OnboardingPage() {
                               </div>
                             </RadioGroup>
                           </div>
-
                           <div className="space-y-2">
                             <Label htmlFor="additionalComments">
                               Any other comments or suggestions?
@@ -3650,7 +3623,6 @@ export default function OnboardingPage() {
                               className="min-h-[100px]"
                             />
                           </div>
-
                           <Alert className="bg-muted/50">
                             <Info className="w-4 h-4" />
                             <AlertDescription>
@@ -3667,12 +3639,9 @@ export default function OnboardingPage() {
                   </form>
                 )}
 
-                {/* Investor Form Steps - keeping this for reference */}
+                {/* Investor Form Steps */}
                 {entityType === "investor" && (
-                  <form
-                    onSubmit={investorForm.handleSubmit(onSubmit)}
-                    className="space-y-6"
-                  >
+                  <form className="space-y-6">
                     {/* Step 1: Basic Information */}
                     {step === 1 && (
                       <>
@@ -3693,7 +3662,6 @@ export default function OnboardingPage() {
                               </p>
                             )}
                           </div>
-
                           <div className="space-y-2">
                             <Label htmlFor="type">Investor Type</Label>
                             <Select
@@ -3714,7 +3682,6 @@ export default function OnboardingPage() {
                               </SelectContent>
                             </Select>
                           </div>
-
                           <div className="space-y-2">
                             <Label>
                               Sectors Interested{" "}
@@ -3753,7 +3720,6 @@ export default function OnboardingPage() {
                         </div>
                       </>
                     )}
-
                     {/* Step 2: Contact Information */}
                     {step === 2 && (
                       <>
@@ -3772,7 +3738,6 @@ export default function OnboardingPage() {
                               </p>
                             )}
                           </div>
-
                           <div className="space-y-2">
                             <Label htmlFor="phone">Phone Number</Label>
                             <Input
@@ -3781,7 +3746,6 @@ export default function OnboardingPage() {
                               placeholder="+1 (555) 123-4567"
                             />
                           </div>
-
                           <div className="space-y-2">
                             <Label htmlFor="address">Address</Label>
                             <Textarea
@@ -3790,7 +3754,6 @@ export default function OnboardingPage() {
                               placeholder="123 Investment St, City, Country"
                             />
                           </div>
-
                           <div className="space-y-2">
                             <Label htmlFor="website">Website</Label>
                             <Input
@@ -3804,7 +3767,6 @@ export default function OnboardingPage() {
                               </p>
                             )}
                           </div>
-
                           <div className="space-y-2">
                             <Label>Social Links</Label>
                             {socialLinks.map((link, index) => (
@@ -3864,7 +3826,6 @@ export default function OnboardingPage() {
                         </div>
                       </>
                     )}
-
                     {/* Step 3: Investment Details */}
                     {step === 3 && (
                       <>
@@ -3877,14 +3838,13 @@ export default function OnboardingPage() {
                               placeholder="City, Country"
                             />
                           </div>
-
                           <div className="space-y-2">
                             <Label htmlFor="foundedAt">Founded Date</Label>
                             <Popover>
                               <PopoverTrigger asChild>
                                 <Button
                                   variant="outline"
-                                  className="justify-start w-full font-normal text-left"
+                                  className="justify-start w-full font-normal text-left bg-transparent"
                                 >
                                   <CalendarIcon className="w-4 h-4 mr-2" />
                                   {investorForm.getValues("foundedAt") ? (
@@ -3916,7 +3876,6 @@ export default function OnboardingPage() {
                               </PopoverContent>
                             </Popover>
                           </div>
-
                           <div className="space-y-2">
                             <Label htmlFor="description">
                               Investor Description
@@ -3928,7 +3887,6 @@ export default function OnboardingPage() {
                               className="min-h-[100px]"
                             />
                           </div>
-
                           <div className="space-y-2">
                             <Label htmlFor="fundingCapacity">
                               Tickect Size
@@ -3962,7 +3920,6 @@ export default function OnboardingPage() {
                               </SelectContent>
                             </Select>
                           </div>
-
                           <div className="space-y-2">
                             <Label htmlFor="stage">
                               Investment Stage Preference
@@ -3993,7 +3950,6 @@ export default function OnboardingPage() {
                         </div>
                       </>
                     )}
-
                     {/* Step 4: Documents & Additional Info */}
                     {step === 4 && (
                       <>
@@ -4012,29 +3968,14 @@ export default function OnboardingPage() {
                               placeholder="0"
                             />
                           </div>
-
                           <div className="space-y-2">
                             <Label htmlFor="investmentBroucher">
                               Investment Broucher .pdf
                             </Label>
-
                             <Uploader
                               multiple={false}
                               accept={{
-                                // "image/*": [],
-                                // "video/*": []
                                 "application/pdf": [],
-                                // "application/pptx": [],
-                                // "application/msword": [], // .doc
-                                // "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
-                                //   [], // .docx
-                                // "application/vnd.ms-excel": [], // .xls
-                                // "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet":
-                                //   [], // .xlsx
-                                // "application/vnd.ms-powerpoint": [], // .ppt
-                                // "application/vnd.openxmlformats-officedocument.presentationml.presentation":
-                                //   [], // .pptx
-                                // "*/*": []
                               }}
                               maxSizeMB={20}
                               uploadTitle={
@@ -4049,7 +3990,6 @@ export default function OnboardingPage() {
                               }
                             />
                           </div>
-
                           <div className="space-y-2">
                             <Label htmlFor="goalExpected">
                               Investment Goals
@@ -4075,19 +4015,19 @@ export default function OnboardingPage() {
                       {step === 1 ? "Back to Selection" : "Previous"}
                     </Button>
                   </div>
-
                   <div className="flex gap-2">
                     {step > 0 && (
                       <Button
                         type="button"
                         variant="outline"
                         onClick={saveProgress}
+                        disabled={isSaving}
                       >
-                        {isSaving ? " Saving Progress" : " Save Progress"}
+                        {isSaving ? "Saving..." : "Save Progress"}
                       </Button>
                     )}
-
-                    {step < (entityType === "company" ? totalSteps : 4) ? (
+                    {/* Fixed: Use the helper function to determine if we're on the final step */}
+                    {!isOnFinalStep() ? (
                       <Button type="button" onClick={nextStep}>
                         Next
                         <ChevronRightIcon className="w-4 h-4 ml-2" />
@@ -4096,13 +4036,9 @@ export default function OnboardingPage() {
                       <Button
                         type="button"
                         disabled={isLoading}
-                        onClick={
-                          entityType === "company"
-                            ? companyForm.handleSubmit(onSubmit)
-                            : investorForm.handleSubmit(onSubmit)
-                        }
+                        onClick={handleCompleteProfile}
                       >
-                        {isLoading ? "Saving..." : "Complete Profile"}
+                        {isLoading ? "Creating Profile..." : "Complete Profile"}
                       </Button>
                     )}
                   </div>

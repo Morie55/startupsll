@@ -340,7 +340,7 @@ export default function CreateEventPage() {
 
         <form onSubmit={handleSubmit} className="space-y-8">
           {/* Banner Upload */}
-          <Card className="border-0 shadow-xl bg-white/80 backdrop-blur-sm dark:bg-slate-800/80">
+          <Card className="border-0 bg-white/80 backdrop-blur-sm dark:bg-slate-800/80">
             <CardHeader className="pb-6">
               <CardTitle className="flex items-center gap-3 text-2xl">
                 <div className="p-3 bg-gradient-to-br from-pink-100 to-rose-100 rounded-xl dark:from-pink-900/30 dark:to-rose-900/30">
@@ -415,7 +415,7 @@ export default function CreateEventPage() {
           </Card>
 
           {/* Basic Information */}
-          <Card className="border-0 shadow-xl bg-white/80 backdrop-blur-sm dark:bg-slate-800/80">
+          <Card className="border-0 bg-white/80 backdrop-blur-sm dark:bg-slate-800/80">
             <CardHeader className="pb-6">
               <CardTitle className="flex items-center gap-3 text-2xl">
                 <div className="p-3 bg-gradient-to-br from-blue-100 to-indigo-100 rounded-xl dark:from-blue-900/30 dark:to-indigo-900/30">
@@ -561,7 +561,7 @@ export default function CreateEventPage() {
           </Card>
 
           {/* Date & Time */}
-          <Card className="border-0 shadow-xl bg-white/80 backdrop-blur-sm dark:bg-slate-800/80">
+          <Card className="border-0 bg-white/80 backdrop-blur-sm dark:bg-slate-800/80">
             <CardHeader className="pb-6">
               <CardTitle className="flex items-center gap-3 text-2xl">
                 <div className="p-3 bg-gradient-to-br from-green-100 to-emerald-100 rounded-xl dark:from-green-900/30 dark:to-emerald-900/30">
@@ -641,7 +641,7 @@ export default function CreateEventPage() {
           </Card>
 
           {/* Location */}
-          <Card className="border-0 shadow-xl bg-white/80 backdrop-blur-sm dark:bg-slate-800/80">
+          <Card className="border-0 bg-white/80 backdrop-blur-sm dark:bg-slate-800/80">
             <CardHeader className="pb-6">
               <CardTitle className="flex items-center gap-3 text-2xl">
                 <div className="p-3 bg-gradient-to-br from-purple-100 to-violet-100 rounded-xl dark:from-purple-900/30 dark:to-violet-900/30">
@@ -696,7 +696,7 @@ export default function CreateEventPage() {
           </Card>
 
           {/* Capacity */}
-          <Card className="border-0 shadow-xl bg-white/80 backdrop-blur-sm dark:bg-slate-800/80">
+          <Card className="border-0 bg-white/80 backdrop-blur-sm dark:bg-slate-800/80">
             <CardHeader className="pb-6">
               <CardTitle className="flex items-center gap-3 text-2xl">
                 <div className="p-3 bg-gradient-to-br from-orange-100 to-amber-100 rounded-xl dark:from-orange-900/30 dark:to-amber-900/30">
@@ -737,7 +737,7 @@ export default function CreateEventPage() {
           </Card>
 
           {/* Event Type & Pricing */}
-          <Card className="border-0 shadow-xl bg-white/80 backdrop-blur-sm dark:bg-slate-800/80">
+          <Card className="border-0 bg-white/80 backdrop-blur-sm dark:bg-slate-800/80">
             <CardHeader className="pb-6">
               <CardTitle className="flex items-center gap-3 text-2xl">
                 <div className="p-3 bg-gradient-to-br from-emerald-100 to-teal-100 rounded-xl dark:from-emerald-900/30 dark:to-teal-900/30">
@@ -831,7 +831,7 @@ export default function CreateEventPage() {
           </Card>
 
           {/* Speakers */}
-          <Card className="border-0 shadow-xl bg-white/80 backdrop-blur-sm dark:bg-slate-800/80">
+          <Card className="border-0 bg-white/80 backdrop-blur-sm dark:bg-slate-800/80">
             <CardHeader className="pb-6">
               <CardTitle className="flex items-center gap-3 text-2xl">
                 <div className="p-3 bg-gradient-to-br from-violet-100 to-purple-100 rounded-xl dark:from-violet-900/30 dark:to-purple-900/30">
@@ -1036,7 +1036,7 @@ export default function CreateEventPage() {
           </Card>
 
           {/* Event Agenda */}
-          <Card className="border-0 shadow-xl bg-white/80 backdrop-blur-sm dark:bg-slate-800/80">
+          <Card className="border-0 bg-white/80 backdrop-blur-sm dark:bg-slate-800/80">
             <CardHeader className="pb-6">
               <CardTitle className="flex items-center gap-3 text-2xl">
                 <div className="p-3 bg-gradient-to-br from-cyan-100 to-blue-100 rounded-xl dark:from-cyan-900/30 dark:to-blue-900/30">
@@ -1137,7 +1137,7 @@ export default function CreateEventPage() {
           </Card>
 
           {/* Contact & Requirements */}
-          <Card className="border-0 shadow-xl bg-white/80 backdrop-blur-sm dark:bg-slate-800/80">
+          <Card className="border-0 bg-white/80 backdrop-blur-sm dark:bg-slate-800/80">
             <CardHeader className="pb-6">
               <CardTitle className="flex items-center gap-3 text-2xl">
                 <div className="p-3 bg-gradient-to-br from-rose-100 to-pink-100 rounded-xl dark:from-rose-900/30 dark:to-pink-900/30">
@@ -1226,7 +1226,7 @@ export default function CreateEventPage() {
           </Card>
 
           {/* Social Media & Website */}
-          <Card className="border-0 shadow-xl bg-white/80 backdrop-blur-sm dark:bg-slate-800/80">
+          <Card className="border-0 bg-white/80 backdrop-blur-sm dark:bg-slate-800/80">
             <CardHeader className="pb-6">
               <CardTitle className="flex items-center gap-3 text-2xl">
                 <div className="p-3 bg-gradient-to-br from-indigo-100 to-blue-100 rounded-xl dark:from-indigo-900/30 dark:to-blue-900/30">
@@ -1271,7 +1271,7 @@ export default function CreateEventPage() {
           </Card>
 
           {/* Sponsors */}
-          <Card className="border-0 shadow-xl bg-white/80 backdrop-blur-sm dark:bg-slate-800/80">
+          <Card className="border-0 bg-white/80 backdrop-blur-sm dark:bg-slate-800/80">
             <CardHeader className="pb-6">
               <CardTitle className="flex items-center gap-3 text-2xl">
                 <div className="p-3 bg-gradient-to-br from-yellow-100 to-orange-100 rounded-xl dark:from-yellow-900/30 dark:to-orange-900/30">
@@ -1363,7 +1363,7 @@ export default function CreateEventPage() {
           </Card>
 
           {/* Submit Section */}
-          <Card className="border-0 shadow-2xl bg-gradient-to-r from-blue-50/80 to-purple-50/80 backdrop-blur-sm dark:from-slate-800/80 dark:to-slate-700/80">
+          <Card className="border-0 bg-gradient-to-r from-blue-50/80 to-purple-50/80 backdrop-blur-sm dark:from-slate-800/80 dark:to-slate-700/80">
             <CardContent className="pt-10 pb-8">
               <div className="flex flex-col justify-center gap-6 sm:flex-row">
                 <Button

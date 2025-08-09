@@ -110,7 +110,7 @@ export function AboutPage() {
           {stats.map((stat, index) => (
             <Card
               key={index}
-              className="text-center border-0 shadow-lg bg-white/80 backdrop-blur-sm"
+              className="text-center border-0 shadow-lg bg-white/80 backdrop-blur-sm dark:bg-gray-800"
             >
               <CardContent className="pt-6">
                 <div className="mb-2 text-3xl font-bold text-primary">
@@ -125,8 +125,8 @@ export function AboutPage() {
         </div>
 
         {/* Main Content */}
-        <Tabs defaultValue="mission" className="w-full">
-          <TabsList className="grid w-full grid-cols-4 mb-8 bg-white/80 backdrop-blur-sm">
+        <Tabs defaultValue="mission" className="w-full ">
+          <TabsList className="grid w-full grid-cols-4 mb-8 bg-white/80 backdrop-blur-sm dark:bg-gray-800">
             <TabsTrigger value="mission" className="flex items-center gap-2">
               <Target className="w-4 h-4" />
               <span className="hidden sm:inline">Our Mission</span>
@@ -150,7 +150,7 @@ export function AboutPage() {
           </TabsList>
 
           <TabsContent value="mission" className="space-y-8">
-            <Card className="border-0 shadow-xl bg-white/90 backdrop-blur-sm">
+            <Card className="border-0 bg-white/90 backdrop-blur-sm dark:bg-gray-800">
               <CardHeader className="pb-8 text-center">
                 <CardTitle className="text-3xl font-bold">
                   Our Mission
@@ -240,7 +240,7 @@ export function AboutPage() {
               {team.map((member) => (
                 <Card
                   key={member.id}
-                  className="overflow-hidden transition-all duration-300 border-0 shadow-lg group hover:shadow-xl bg-white/90 backdrop-blur-sm"
+                  className="overflow-hidden transition-all duration-300 border-0 group hover:shadow-xl bg-white/90 backdrop-blur-sm dark:bg-gray-800"
                 >
                   <CardContent className="p-0">
                     <div className="relative overflow-hidden aspect-square">
@@ -283,8 +283,8 @@ export function AboutPage() {
             </div>
           </TabsContent>
 
-          <TabsContent value="partners" className="space-y-8">
-            <Card className="border-0 shadow-xl bg-white/90 backdrop-blur-sm">
+          <TabsContent value="partners" className="space-y-8 ">
+            <Card className="border-0 bg-white/90 dark:bg-gray-800 backdrop-blur-sm">
               <CardHeader className="text-center">
                 <CardTitle className="text-3xl font-bold">
                   Strategic Partners
@@ -318,7 +318,7 @@ export function AboutPage() {
 
           <TabsContent value="contact" className="space-y-8">
             <div className="grid gap-8 lg:grid-cols-2">
-              <Card className="border-0 shadow-xl bg-white/90 backdrop-blur-sm">
+              <Card className="border-0 bg-white/90 backdrop-blur-sm dark:bg-gray-800">
                 <CardHeader>
                   <CardTitle className="text-2xl font-bold">
                     Get In Touch
@@ -381,7 +381,7 @@ export function AboutPage() {
                 </CardContent>
               </Card>
 
-              <Card className="border-0 shadow-xl bg-white/90 backdrop-blur-sm">
+              <Card className="border-0 bg-white/90 backdrop-blur-sm dark:bg-gray-800">
                 <CardHeader>
                   <CardTitle className="text-2xl font-bold">
                     Send Us a Message
@@ -427,7 +427,7 @@ export function AboutPage() {
                       />
                     </div>
 
-                    <Button className="w-full py-3 font-semibold text-white bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70">
+                    <Button className="w-full py-3 font-semibold text-white bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 dark:from-primary/80 dark:to-primary/60 ">
                       Send Message
                     </Button>
                   </form>

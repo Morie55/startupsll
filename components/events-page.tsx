@@ -328,7 +328,7 @@ export default function EventsPage() {
             Event Analytics
           </h2>
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-6">
-            <Card className="border-0 shadow-xl bg-white/80 backdrop-blur-sm dark:bg-slate-800/80">
+            <Card className="border-0 bg-white/80 backdrop-blur-sm dark:bg-slate-800/80">
               <CardContent className="p-6">
                 <div className="flex items-center gap-3">
                   <div className="p-3 bg-blue-100 rounded-xl dark:bg-blue-900/30">
@@ -346,7 +346,7 @@ export default function EventsPage() {
               </CardContent>
             </Card>
 
-            <Card className="border-0 shadow-xl bg-white/80 backdrop-blur-sm dark:bg-slate-800/80">
+            <Card className="border-0 bg-white/80 backdrop-blur-sm dark:bg-slate-800/80">
               <CardContent className="p-6">
                 <div className="flex items-center gap-3">
                   <div className="p-3 bg-green-100 rounded-xl dark:bg-green-900/30">
@@ -364,7 +364,7 @@ export default function EventsPage() {
               </CardContent>
             </Card>
 
-            <Card className="border-0 shadow-xl bg-white/80 backdrop-blur-sm dark:bg-slate-800/80">
+            <Card className="border-0 bg-white/80 backdrop-blur-sm dark:bg-slate-800/80">
               <CardContent className="p-6">
                 <div className="flex items-center gap-3">
                   <div className="p-3 bg-purple-100 rounded-xl dark:bg-purple-900/30">
@@ -448,7 +448,7 @@ export default function EventsPage() {
             </div>
 
             {filteredUpcomingEvents.length === 0 ? (
-              <Card className="border-0 shadow-xl bg-white/80 backdrop-blur-sm dark:bg-slate-800/80">
+              <Card className="border-0 bg-white/80 backdrop-blur-sm dark:bg-slate-800/80">
                 <CardContent className="p-12 text-center">
                   <Calendar className="w-16 h-16 mx-auto mb-4 text-slate-400" />
                   <h3 className="mb-2 text-xl font-semibold text-slate-900 dark:text-white">
@@ -474,7 +474,7 @@ export default function EventsPage() {
                 {filteredUpcomingEvents.map((event) => (
                   <Card
                     key={event.id}
-                    className={`border-0 shadow-xl bg-white/80 backdrop-blur-sm dark:bg-slate-800/80 hover:shadow-2xl transition-all duration-300 ${
+                    className={`border-0  bg-white/80 backdrop-blur-sm dark:bg-slate-800/80 hover:shadow-2xl transition-all duration-300 ${
                       event.featured ? "ring-2 ring-blue-500/50" : ""
                     }`}
                   >
@@ -551,25 +551,14 @@ export default function EventsPage() {
                               View Details
                             </Button>
                           </Link>
-                          <SignedIn>
-                            <Button
-                              size="sm"
-                              className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
-                              onClick={() => handleRegistrationClick(event)}
-                            >
-                              Register
-                            </Button>
-                          </SignedIn>
-                          <SignedOut>
-                            <SignInButton>
-                              <Button
-                                size="sm"
-                                className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
-                              >
-                                Register
-                              </Button>
-                            </SignInButton>
-                          </SignedOut>
+
+                          <Button
+                            size="sm"
+                            className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
+                            onClick={() => handleRegistrationClick(event)}
+                          >
+                            Register
+                          </Button>
                         </div>
                       </div>
                     </CardContent>
@@ -596,7 +585,7 @@ export default function EventsPage() {
             </div>
 
             {filteredPastEvents.length === 0 ? (
-              <Card className="border-0 shadow-xl bg-white/80 backdrop-blur-sm dark:bg-slate-800/80">
+              <Card className="border-0 bg-white/80 backdrop-blur-sm dark:bg-slate-800/80">
                 <CardContent className="p-12 text-center">
                   <BarChart3 className="w-16 h-16 mx-auto mb-4 text-slate-400" />
                   <h3 className="mb-2 text-xl font-semibold text-slate-900 dark:text-white">
