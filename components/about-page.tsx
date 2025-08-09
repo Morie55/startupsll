@@ -30,7 +30,7 @@ const team = [
     id: 1,
     name: "Francis Steven George",
     role: "Executive Director",
-    image: "/placeholder.svg?height=400&width=400",
+    image: "/FrancisGeorge.png",
     bio: "Mr. Francis has over 15 years of experience in entrepreneurship and ecosystem building, leading strategic initiatives across West Africa.",
     expertise: ["Strategy", "Leadership", "Ecosystem Building"],
   },
@@ -47,7 +47,7 @@ const team = [
     name: "Diana Lake",
     role: "Investor Relations",
     image: "/placeholder.svg?height=400&width=400",
-    bio: "Aminata connects startups with investors and manages funding relationships, bringing extensive experience in venture capital.",
+    bio: "Diana connects startups with investors and manages funding relationships, bringing extensive experience in venture capital.",
     expertise: ["Investment", "Fundraising", "Venture Capital"],
   },
   {
