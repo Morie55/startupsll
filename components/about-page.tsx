@@ -28,10 +28,10 @@ import { Badge } from "@/components/ui/badge";
 const team = [
   {
     id: 1,
-    name: "Francis Steven George",
+    name: "Francis Stevens George",
     role: "Executive Director",
     image: "/images/FrancisGeorge.png",
-    bio: "Mr. Francis has over 15 years of experience in entrepreneurship and ecosystem building, leading strategic initiatives across West Africa.",
+    bio: "Mr. Francis has over 25 years of experience in entrepreneurship and ecosystem building, leading strategic initiatives across the world.",
     expertise: ["Strategy", "Leadership", "Ecosystem Building"],
   },
   {
