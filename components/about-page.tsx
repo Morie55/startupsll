@@ -38,7 +38,7 @@ const team = [
     id: 2,
     name: "Ngevao Sesay",
     role: "Head of Programs",
-    image: "/images/NgevaoSesay.png",
+    image: "/images/NgevaoSesay.jpg",
     bio: "Ngevao leads our startup support programs and mentorship initiatives, with a focus on sustainable business development.",
     expertise: ["Program Management", "Mentorship", "Business Development"],
   },
@@ -178,12 +178,12 @@ export function AboutPage() {
                         Who We Are
                       </h3>
                       <p className="leading-relaxed text-muted-foreground">
-                        StartUpSL is Sierra Leone's premier startup ecosystem
-                        platform, designed to connect, support, and accelerate
-                        the growth of innovative businesses across the country.
-                        We serve as the central hub where entrepreneurs,
-                        investors, mentors, and resources converge to create
-                        lasting impact.
+                        StartUpSL is Sierra Leone’s leading startup ecosystem
+                        platform, dedicated to fostering innovation,
+                        collaboration, and sustainable growth. We provide a
+                        central hub where entrepreneurs, investors, mentors, and
+                        strategic resources unite to accelerate business success
+                        and drive meaningful impact nationwide.
                       </p>
                     </div>
 
@@ -192,10 +192,10 @@ export function AboutPage() {
                         Our Vision
                       </h3>
                       <p className="leading-relaxed text-muted-foreground">
-                        To position Sierra Leone as a leading innovation hub in
-                        West Africa, fostering sustainable economic growth
-                        through entrepreneurship, technology, and strategic
-                        partnerships that create opportunities for all.
+                        To establish Sierra Leone as a premier innovation hub in
+                        West Africa, driving sustainable economic growth through
+                        entrepreneurship, technology, and strategic partnerships
+                        that unlock opportunities for all.
                       </p>
                     </div>
                   </div>
@@ -209,7 +209,8 @@ export function AboutPage() {
                         "Support entrepreneurs in building scalable, sustainable businesses",
                         "Connect startups with investors and funding opportunities",
                         "Provide comprehensive resources, mentorship, and training programs",
-                        "Foster collaboration between startups, corporations, and government",
+                        "Foster a collaborative ecosystem that drives innovation",
+                        "Promote diversity and inclusion in the startup community",
                         "Showcase Sierra Leone's innovation and entrepreneurial talent globally",
                         "Attract international investment and strategic partnerships",
                       ].map((goal, index) => (
@@ -339,7 +340,7 @@ export function AboutPage() {
                           Visit Our Office
                         </h3>
                         <p className="text-muted-foreground">
-                          123 Innovation Street
+                          All as one Spur Loop
                           <br />
                           Freetown, Sierra Leone
                         </p>
@@ -371,9 +372,9 @@ export function AboutPage() {
                           Call Us
                         </h3>
                         <p className="text-muted-foreground">
-                          +232 76 123 4567
+                          +232 79 331 413
                           <br />
-                          +232 77 987 6543
+                          +232 79 514 146
                         </p>
                       </div>
                     </div>
