@@ -183,8 +183,15 @@ export default function CompanyDetailsPage({
 
   // Calculate funding progress percentage
   const calculateFundingProgress = () => {
+    // If no funding data is available, return 0%
+    if (!company || !company.amountRaised || !company.fundingNeeded) return 0;
+    // Calculate the percentage of funding raised
     if (!company.amountRaised || !company.fundingNeeded) return 0;
+    if (company.fundingNeeded === 0) return 100; // Avoid division by zero
+    if (company.amountRaised < 0 || company.fundingNeeded < 0) return 0; // Handle negative values
+    // Calculate the progress percentage
     const progress = (company.amountRaised / company.fundingNeeded) * 100;
+    // Cap the progress at 100%
     return Math.min(progress, 100); // Cap at 100%
   };
 
@@ -249,12 +256,33 @@ export default function CompanyDetailsPage({
 
     return stageMap[stage] || "bg-gray-100 text-gray-800 border-gray-200";
   };
-
+  // Calculate age from founder's date of birth
   function calculateAge(founderDob: string): number {
-    if (!founderDob) return NaN;
+    const invalidValues = new Set([
+      "",
+      "N/A",
+      "Not specified",
+      "Unknown",
+      "Not provided",
+      "No data",
+      "Not available",
+      "Not applicable",
+      "Unknown date",
+      "Unknown date of birth",
+      "Unknown DOB",
+      "Unknown birth date",
+    ]);
+
+    // Trim and normalize case
+    const dobTrimmed = founderDob?.trim();
+    if (!dobTrimmed || invalidValues.has(dobTrimmed)) return NaN;
+
+    const birthDate = new Date(dobTrimmed);
+    if (isNaN(birthDate.getTime())) return NaN; // Invalid date
+
     const today = new Date();
-    const birthDate = new Date(founderDob);
     let age = today.getFullYear() - birthDate.getFullYear();
+
     const monthDiff = today.getMonth() - birthDate.getMonth();
     if (
       monthDiff < 0 ||
@@ -262,6 +290,10 @@ export default function CompanyDetailsPage({
     ) {
       age--;
     }
+
+    // Handle unrealistic ages
+    if (age < 0 || age > 150) return NaN;
+
     return age;
   }
 
@@ -307,21 +339,6 @@ export default function CompanyDetailsPage({
             {/* Company info */}
             <div className="flex-grow space-y-4 dark:text-white">
               <div>
-                {/* <div className="flex flex-wrap items-center gap-3 mb-2">
-                  <h1 className="text-3xl font-bold ">
-                    {company.name}
-                  </h1>
-                  {company.stage && (
-                    <Badge
-                      variant="outline"
-                      className={`font-medium px-3 py-1 rounded-full text-xs ${getStageBadgeColor(
-                        company.stage
-                      )}`}
-                    >
-                      {company.stage}
-                    </Badge>
-                  )}
-                </div> */}
                 <div className="flex flex-wrap items-center gap-3 mb-2">
                   <h1 className="text-3xl font-bold ">
                     {company?.name || "Loading..."}
@@ -470,7 +487,9 @@ export default function CompanyDetailsPage({
                     Edit Company
                   </Link>
                 )}
-                {user && <FollowButton userId={company?.userId} />}
+                {user && user.publicMetadata.role !== "company" && (
+                  <FollowButton userId={company?.userId} />
+                )}
 
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
@@ -494,7 +513,7 @@ export default function CompanyDetailsPage({
       <div className="container px-4 py-8 mx-auto max-w-7xl">
         {/* Key metrics */}
         <div className="grid grid-cols-1 gap-6 mb-10 sm:grid-cols-2 lg:grid-cols-4">
-          <Card className="overflow-hidden border-0 shadow-md dark:bg-accent">
+          <Card className="overflow-hidden border-0 dark:bg-accent">
             <CardHeader className="pb-2 ">
               <CardDescription className="font-medium">
                 Business Age
@@ -519,7 +538,7 @@ export default function CompanyDetailsPage({
             </CardContent>
           </Card>
 
-          <Card className="overflow-hidden border-0 shadow-md dark:bg-accent">
+          <Card className="overflow-hidden border-0 dark:bg-accent">
             <CardHeader className="pb-2 ">
               <CardDescription className="font-medium">
                 Funding Status
@@ -567,7 +586,7 @@ export default function CompanyDetailsPage({
             </CardContent>
           </Card>
 
-          <Card className="overflow-hidden border-0 shadow-md dark:bg-accent">
+          <Card className="overflow-hidden border-0 dark:bg-accent">
             <CardHeader className="pb-2 ">
               <CardDescription className="font-medium">
                 Team Size
@@ -593,7 +612,7 @@ export default function CompanyDetailsPage({
             </CardContent>
           </Card>
 
-          <Card className="overflow-hidden border-0 shadow-md dark:bg-accent">
+          <Card className="overflow-hidden border-0 dark:bg-accent">
             <CardHeader className="pb-2 ">
               <CardDescription className="font-medium">
                 Business Model
@@ -681,7 +700,7 @@ export default function CompanyDetailsPage({
           <TabsContent value="overview" className="space-y-8">
             <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
               <div className="space-y-8 lg:col-span-2">
-                <Card className="overflow-hidden shadow-md dark:border">
+                <Card className="overflow-hidden dark:border">
                   <CardHeader className="border-b dark:bg-accent">
                     <CardTitle className="text-xl">Company Profile</CardTitle>
                   </CardHeader>
@@ -708,7 +727,7 @@ export default function CompanyDetailsPage({
                   </CardContent>
                 </Card>
 
-                <Card className="overflow-hidden shadow-md dark:border">
+                <Card className="overflow-hidden dark:border">
                   <CardHeader className="border-b dark:bg-accent">
                     <CardTitle className="text-xl">Key Information</CardTitle>
                   </CardHeader>
@@ -809,7 +828,7 @@ export default function CompanyDetailsPage({
               </div>
 
               <div className="space-y-8">
-                <Card className="overflow-hidden shadow-md dark:border">
+                <Card className="overflow-hidden dark:border">
                   <CardHeader className="border-b dark:bg-accent">
                     <CardTitle className="text-xl">Mission Statement</CardTitle>
                   </CardHeader>
@@ -837,7 +856,7 @@ export default function CompanyDetailsPage({
                   </CardContent>
                 </Card>
 
-                <Card className="overflow-hidden shadow-md dark:border">
+                <Card className="overflow-hidden dark:border">
                   <CardHeader className="border-b dark:bg-accent">
                     <CardTitle className="text-xl">
                       Founder Information
@@ -889,7 +908,7 @@ export default function CompanyDetailsPage({
                 </Card>
 
                 {/* Quick contact card */}
-                <Card className="overflow-hidden shadow-md dark:border">
+                <Card className="overflow-hidden dark:border">
                   <CardHeader className="border-b bg-accent">
                     <CardTitle className="text-xl">Quick Contact</CardTitle>
                   </CardHeader>
@@ -934,7 +953,6 @@ export default function CompanyDetailsPage({
                         </div>
                       )}
                     </div>
-                    <Button className="w-full mt-4">Contact Company</Button>
                   </CardContent>
                 </Card>
               </div>
@@ -945,7 +963,7 @@ export default function CompanyDetailsPage({
           <TabsContent value="business" className="space-y-8">
             <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
               <div className="space-y-8 lg:col-span-2">
-                <Card className="overflow-hidden shadow-md dark:border">
+                <Card className="overflow-hidden dark:border">
                   <CardHeader className="border-b bg-accent">
                     <CardTitle className="text-xl">
                       Business Information
@@ -1098,7 +1116,7 @@ export default function CompanyDetailsPage({
                   </CardContent>
                 </Card>
 
-                <Card className="overflow-hidden shadow-md dark:border">
+                <Card className="overflow-hidden dark:border">
                   <CardHeader className="border-b bg-accent">
                     <CardTitle className="text-xl">
                       Business Challenges
@@ -1129,7 +1147,7 @@ export default function CompanyDetailsPage({
               </div>
 
               <div>
-                <Card className="overflow-hidden shadow-md dark:border">
+                <Card className="overflow-hidden dark:border">
                   <CardHeader className="border-b bg-accent">
                     <CardTitle className="text-xl">Business Summary</CardTitle>
                   </CardHeader>
@@ -1306,7 +1324,7 @@ export default function CompanyDetailsPage({
           <TabsContent value="financial" className="space-y-8">
             <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
               <div className="space-y-8 lg:col-span-2">
-                <Card className="overflow-hidden shadow-md dark:border">
+                <Card className="overflow-hidden dark:border">
                   <CardHeader className="border-b bg-accent">
                     <CardTitle className="text-xl">
                       Financial Overview
@@ -1418,7 +1436,7 @@ export default function CompanyDetailsPage({
                   </CardContent>
                 </Card>
 
-                <Card className="overflow-hidden shadow-md dark:border">
+                <Card className="overflow-hidden dark:border">
                   <CardHeader className="border-b bg-accent">
                     <CardTitle className="text-xl">Annual Turnover</CardTitle>
                   </CardHeader>
@@ -1470,7 +1488,7 @@ export default function CompanyDetailsPage({
                   </CardContent>
                 </Card>
 
-                <Card className="overflow-hidden shadow-md dark:border">
+                <Card className="overflow-hidden dark:border">
                   <CardHeader className="border-b bg-accent">
                     <CardTitle className="text-xl">
                       External Funding Sources
@@ -1510,7 +1528,7 @@ export default function CompanyDetailsPage({
               </div>
 
               <div>
-                <Card className="overflow-hidden shadow-md dark:border">
+                <Card className="overflow-hidden dark:border">
                   <CardHeader className="border-b bg-accent">
                     <CardTitle className="text-xl">
                       Financial Documents
@@ -1597,7 +1615,7 @@ export default function CompanyDetailsPage({
           <TabsContent value="innovation" className="space-y-8">
             <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
               <div className="space-y-8 lg:col-span-2">
-                <Card className="overflow-hidden shadow-md dark:border">
+                <Card className="overflow-hidden dark:border">
                   <CardHeader className="border-b bg-accent">
                     <CardTitle className="text-xl">Innovation</CardTitle>
                   </CardHeader>
@@ -1660,7 +1678,7 @@ export default function CompanyDetailsPage({
                   </CardContent>
                 </Card>
 
-                <Card className="overflow-hidden shadow-md dark:border">
+                <Card className="overflow-hidden dark:border">
                   <CardHeader className="border-b bg-accent">
                     <CardTitle className="text-xl">
                       Social & Environmental Impact
@@ -1739,7 +1757,7 @@ export default function CompanyDetailsPage({
               </div>
 
               <div>
-                <Card className="overflow-hidden shadow-md dark:border">
+                <Card className="overflow-hidden dark:border">
                   <CardHeader className="border-b bg-accent">
                     <CardTitle className="text-xl">
                       Ecosystem Participation
@@ -1839,7 +1857,6 @@ export default function CompanyDetailsPage({
                         <h3 className="mb-2 text-sm font-medium text-slate-500">
                           Get Involved
                         </h3>
-                        <Button className="w-full">Contact Company</Button>
                       </div>
                     </div>
                   </CardContent>
@@ -1850,7 +1867,7 @@ export default function CompanyDetailsPage({
 
           {/* Documents Tab */}
           <TabsContent value="documents" className="space-y-8">
-            <Card className="overflow-hidden shadow-md dark:border">
+            <Card className="overflow-hidden dark:border">
               <CardHeader className="border-b bg-accent">
                 <CardTitle className="text-xl">Company Documents</CardTitle>
                 <CardDescription>
@@ -1982,7 +1999,7 @@ export default function CompanyDetailsPage({
           <TabsContent value="contact" className="space-y-8">
             <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
               <div className="space-y-8 lg:col-span-2">
-                <Card className="overflow-hidden shadow-md dark:border">
+                <Card className="overflow-hidden dark:border">
                   <CardHeader className="border-b bg-accent">
                     <CardTitle className="text-xl">
                       Contact Information
@@ -2115,7 +2132,7 @@ export default function CompanyDetailsPage({
                   </CardContent>
                 </Card>
 
-                <Card className="overflow-hidden shadow-md dark:border">
+                <Card className="overflow-hidden dark:border">
                   <CardHeader className="border-b bg-accent">
                     <CardTitle className="text-xl">Contact Form</CardTitle>
                     <CardDescription>
@@ -2191,7 +2208,7 @@ export default function CompanyDetailsPage({
               </div>
 
               <div>
-                <Card className="overflow-hidden shadow-md dark:border">
+                <Card className="overflow-hidden dark:border">
                   <CardHeader className="border-b bg-accent">
                     <CardTitle className="text-xl">Location</CardTitle>
                   </CardHeader>
@@ -2251,7 +2268,7 @@ export default function CompanyDetailsPage({
 
           {/* Funding Rounds Tab */}
           <TabsContent value="funding" className="space-y-8">
-            <Card className="overflow-hidden shadow-md dark:border">
+            <Card className="overflow-hidden dark:border">
               <CardHeader className="border-b bg-accent ">
                 <div className="flex justify-between w-full">
                   <div>
@@ -2299,7 +2316,7 @@ export default function CompanyDetailsPage({
 
             <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
               <div className="lg:col-span-2">
-                <Card className="overflow-hidden shadow-md dark:border">
+                <Card className="overflow-hidden dark:border">
                   <CardHeader className="border-b bg-accent">
                     <CardTitle className="text-xl">Funding Summary</CardTitle>
                   </CardHeader>
@@ -2368,7 +2385,7 @@ export default function CompanyDetailsPage({
               </div>
 
               <div>
-                <Card className="overflow-hidden shadow-md dark:border">
+                <Card className="overflow-hidden dark:border">
                   <CardHeader className="border-b bg-accent">
                     <CardTitle className="text-xl">
                       Investment Opportunity
@@ -2398,17 +2415,6 @@ export default function CompanyDetailsPage({
                         >
                           {company?.stage || "Not specified"}
                         </Badge>
-                      </div>
-
-                      <Separator className="my-2" />
-
-                      <div>
-                        <h3 className="mb-2 text-sm font-medium text-slate-500">
-                          Interested in investing?
-                        </h3>
-                        <Link href="/Investor-interest-form" passHref>
-                          <Button className="w-full">Contact Company</Button>
-                        </Link>
                       </div>
 
                       {company?.pitchDeck && (
