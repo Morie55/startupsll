@@ -50,7 +50,6 @@ import { useUser } from "@clerk/nextjs";
 export default function CompaniesPage({ companies }: any) {
   const { user } = useUser();
   const [currentPage, setCurrentPage] = useState(1);
-  s;
   const [pageSize, setPageSize] = useState(5);
   const [searchTerm, setSearchTerm] = useState("");
   const [sectorFilter, setSectorFilter] = useState("All");
