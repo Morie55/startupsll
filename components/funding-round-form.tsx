@@ -101,7 +101,7 @@ export default function FundingRoundForm() {
       minimumInvestment: "",
       useOfFunds: "",
       supportingDocuments: "",
-      contactPerson: "Lans Kabba", // Auto-filled example
+      contactPerson: "",
     },
   });
 

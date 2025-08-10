@@ -46,7 +46,7 @@ const team = [
     id: 3,
     name: "Diana Lake",
     role: "Investor Relations",
-    image: "/placeholder.svg?height=400&width=400",
+    image: "/images/DianaLake.jpg",
     bio: "Diana connects startups with investors and manages funding relationships, bringing extensive experience in venture capital.",
     expertise: ["Investment", "Fundraising", "Venture Capital"],
   },
