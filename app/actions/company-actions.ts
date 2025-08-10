@@ -205,20 +205,6 @@ export async function createCompany(data: any) {
       )
     );
 
-    // const recipientIds = investors
-    //   .map((inv) => inv.userId)
-    //   .filter(Boolean);
-
-    // if (recipientIds.length > 0) {
-    //   await sendNotification({
-    //     title: `New company registered in ${company.sector} sector`,
-    //     desc: `${company.name} has registered in the ${company.sector} sector.`,
-    //     from: company.userId,
-    //     to: recipientIds,
-    //     url: `/companies/${company._id}`,
-    //   });
-    // }
-
     return JSON.parse(
       JSON.stringify({ success: true, company: company, user: updatedUser })
     );

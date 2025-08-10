@@ -48,114 +48,6 @@ import {
 } from "lucide-react";
 import { SignedIn, SignedOut, UserButton, SignInButton } from "@clerk/nextjs";
 
-// Mock data for events
-const upcomingEvents = [
-  {
-    id: "1",
-    title: "StartUp Pitch Night",
-    description:
-      "Join us for an evening of innovative startup pitches from Sierra Leone's most promising entrepreneurs.",
-    category: "networking",
-    date: "2024-02-15",
-    time: "18:00",
-    location: "Freetown Innovation Hub",
-    currentAttendees: 45,
-    maxAttendees: 100,
-    price: 0,
-    eventType: "free",
-    image: "/placeholder.svg?height=200&width=300",
-    organizer: "StartUp-SL",
-    featured: true,
-  },
-  {
-    id: "2",
-    title: "Tech Founders Meetup",
-    description:
-      "Monthly gathering for tech founders to share experiences, challenges, and opportunities.",
-    category: "meetup",
-    date: "2024-02-20",
-    time: "19:00",
-    location: "Impact Hub Freetown",
-    currentAttendees: 32,
-    maxAttendees: 50,
-    price: 0,
-    eventType: "free",
-    image: "/placeholder.svg?height=200&width=300",
-    organizer: "Tech Community SL",
-    featured: false,
-  },
-  {
-    id: "3",
-    title: "Digital Marketing Workshop",
-    description:
-      "Learn the latest digital marketing strategies for growing your startup in the African market.",
-    category: "workshop",
-    date: "2024-02-25",
-    time: "14:00",
-    location: "Bintumani Conference Center",
-    currentAttendees: 78,
-    maxAttendees: 120,
-    price: 15,
-    eventType: "paid",
-    image: "/placeholder.svg?height=200&width=300",
-    organizer: "Digital SL",
-    featured: false,
-  },
-  {
-    id: "4",
-    title: "Investment Readiness Bootcamp",
-    description:
-      "3-day intensive program to prepare your startup for investment opportunities.",
-    category: "training",
-    date: "2024-03-05",
-    time: "09:00",
-    location: "Freetown Business District",
-    currentAttendees: 25,
-    maxAttendees: 30,
-    price: 50,
-    eventType: "paid",
-    image: "/placeholder.svg?height=200&width=300",
-    organizer: "Investment Hub SL",
-    featured: true,
-  },
-];
-
-const pastEvents = [
-  {
-    id: "5",
-    title: "Women in Tech Conference 2024",
-    description:
-      "Celebrating and empowering women entrepreneurs in Sierra Leone's tech ecosystem.",
-    category: "conference",
-    date: "2024-01-20",
-    time: "09:00",
-    location: "Radisson Blu Mammy Yoko Hotel",
-    attendees: 150,
-    maxAttendees: 150,
-    price: 25,
-    eventType: "paid",
-    image: "/placeholder.svg?height=200&width=300",
-    organizer: "Women Tech SL",
-    rating: 4.8,
-  },
-  {
-    id: "6",
-    title: "Fintech Innovation Summit",
-    description: "Exploring the future of financial technology in West Africa.",
-    category: "conference",
-    date: "2024-01-15",
-    time: "10:00",
-    location: "Sierra Leone Commercial Bank HQ",
-    attendees: 200,
-    maxAttendees: 200,
-    price: 30,
-    eventType: "paid",
-    image: "/placeholder.svg?height=200&width=300",
-    organizer: "FinTech SL",
-    rating: 4.6,
-  },
-];
-
 // Analytics data
 const analyticsData = {
   totalEvents: 12,
@@ -177,7 +69,7 @@ interface RegistrationFormData {
   specialRequests: string;
 }
 
-export default function EventsPage() {
+export default function EventsPage({ upcomingEvents, pastEvents }: any) {
   const [searchTerm, setSearchTerm] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("all");
   const [activeTab, setActiveTab] = useState("upcoming");
@@ -197,7 +89,7 @@ export default function EventsPage() {
   });
   const [formErrors, setFormErrors] = useState<{ [key: string]: string }>({});
 
-  const filteredUpcomingEvents = upcomingEvents.filter((event) => {
+  const filteredUpcomingEvents = upcomingEvents?.filter((event: any) => {
     const matchesSearch =
       event.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       event.description.toLowerCase().includes(searchTerm.toLowerCase());
@@ -206,7 +98,7 @@ export default function EventsPage() {
     return matchesSearch && matchesCategory;
   });
 
-  const filteredPastEvents = pastEvents.filter((event) => {
+  const filteredPastEvents = pastEvents?.filter((event: any) => {
     const matchesSearch =
       event.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       event.description.toLowerCase().includes(searchTerm.toLowerCase());
@@ -423,11 +315,11 @@ export default function EventsPage() {
           <TabsList className="grid w-full h-12 grid-cols-2 border lg:w-96 bg-white/80 backdrop-blur-sm border-slate-200 dark:bg-slate-800/80 dark:border-slate-700">
             <TabsTrigger value="upcoming" className="h-10">
               <Clock className="w-4 h-4 mr-2" />
-              Upcoming Events ({filteredUpcomingEvents.length})
+              Upcoming Events ({filteredUpcomingEvents?.length})
             </TabsTrigger>
             <TabsTrigger value="past" className="h-10">
               <BarChart3 className="w-4 h-4 mr-2" />
-              Past Events ({filteredPastEvents.length})
+              Past Events ({filteredPastEvents?.length})
             </TabsTrigger>
           </TabsList>
 
@@ -447,7 +339,7 @@ export default function EventsPage() {
               </div>
             </div>
 
-            {filteredUpcomingEvents.length === 0 ? (
+            {filteredUpcomingEvents?.length === 0 ? (
               <Card className="border-0 bg-white/80 backdrop-blur-sm dark:bg-slate-800/80">
                 <CardContent className="p-12 text-center">
                   <Calendar className="w-16 h-16 mx-auto mb-4 text-slate-400" />
@@ -471,9 +363,9 @@ export default function EventsPage() {
               </Card>
             ) : (
               <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-                {filteredUpcomingEvents.map((event) => (
+                {filteredUpcomingEvents?.map((event: any) => (
                   <Card
-                    key={event.id}
+                    key={event._id}
                     className={`border-0  bg-white/80 backdrop-blur-sm dark:bg-slate-800/80 hover:shadow-2xl transition-all duration-300 ${
                       event.featured ? "ring-2 ring-blue-500/50" : ""
                     }`}
@@ -546,7 +438,7 @@ export default function EventsPage() {
                             : `$${event.price}`}
                         </div>
                         <div className="flex gap-2">
-                          <Link href={`/events/${event.id}`}>
+                          <Link href={`/events/${event._id}`}>
                             <Button variant="outline" size="sm">
                               View Details
                             </Button>
@@ -584,7 +476,7 @@ export default function EventsPage() {
               </div>
             </div>
 
-            {filteredPastEvents.length === 0 ? (
+            {filteredPastEvents?.length === 0 ? (
               <Card className="border-0 bg-white/80 backdrop-blur-sm dark:bg-slate-800/80">
                 <CardContent className="p-12 text-center">
                   <BarChart3 className="w-16 h-16 mx-auto mb-4 text-slate-400" />
@@ -600,9 +492,9 @@ export default function EventsPage() {
               </Card>
             ) : (
               <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-                {filteredPastEvents.map((event) => (
+                {filteredPastEvents?.map((event: any) => (
                   <Card
-                    key={event.id}
+                    key={event._id}
                     className="transition-all duration-300 border-0 shadow-xl bg-white/80 backdrop-blur-sm dark:bg-slate-800/80 hover:shadow-2xl"
                   >
                     <div className="relative">
@@ -660,7 +552,7 @@ export default function EventsPage() {
                         >
                           Completed
                         </Badge>
-                        <Link href={`/events/${event.id}`}>
+                        <Link href={`/events/${event._id}`}>
                           <Button variant="outline" size="sm">
                             <Eye className="w-4 h-4 mr-2" />
                             View Details

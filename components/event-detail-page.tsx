@@ -32,167 +32,25 @@ import {
 } from "lucide-react";
 import { SignedIn, SignedOut, UserButton, SignInButton } from "@clerk/nextjs";
 
-// Mock event data - in real app this would come from props or API
-const eventData = {
-  id: "1",
-  title: "StartUp-SL Innovation Summit 2024",
-  shortDescription:
-    "Join Sierra Leone's premier startup ecosystem for a day of innovation, networking, and growth opportunities.",
-  fullDescription:
-    "The StartUp-SL Innovation Summit 2024 brings together entrepreneurs, investors, mentors, and innovators from across Sierra Leone and West Africa. This flagship event features keynote presentations, panel discussions, startup pitches, and extensive networking opportunities. Whether you're a seasoned entrepreneur or just starting your journey, this summit offers valuable insights, connections, and inspiration to take your venture to the next level.",
-  banner: "/placeholder.svg?height=400&width=1200",
-  date: "2024-03-15",
-  time: "09:00",
-  endTime: "18:00",
-  location: "Freetown Innovation Hub",
-  address: "15 Siaka Stevens Street, Freetown, Sierra Leone",
-  maxAttendees: 250,
-  currentAttendees: 187,
-  eventType: "paid",
-  ticketPrice: 25.0,
-  registrationDeadline: "2024-03-10T23:59",
-  category: "conference",
-  tags: ["Innovation", "Startups", "Networking", "Investment", "Technology"],
-  contactEmail: "info@startup-sl.com",
-  contactPhone: "+232 76 123 456",
-  website: "https://summit.startup-sl.com",
-  socialMedia: "#StartUpSL2024",
-  requirements:
-    "Bring your business cards, laptop for workshops, and an open mind for networking!",
-  accessibility:
-    "The venue is wheelchair accessible. Sign language interpretation available upon request. Please contact us 48 hours in advance for special accommodations.",
-  speakers: [
-    {
-      id: "1",
-      name: "Amara Kamara",
-      title: "CEO & Founder",
-      company: "TechSL Innovations",
-      bio: "Serial entrepreneur with 15+ years experience building tech companies across West Africa. Founded 3 successful startups and now mentors emerging entrepreneurs.",
-      image: "/placeholder.svg?height=200&width=200",
-      linkedin: "https://linkedin.com/in/amarakamara",
-      twitter: "https://twitter.com/amarakamara",
-    },
-    {
-      id: "2",
-      name: "Mohamed Sesay",
-      title: "Investment Director",
-      company: "West Africa Ventures",
-      bio: "Leading investor focused on early-stage African startups. Has invested in over 50 companies across fintech, agtech, and healthtech sectors.",
-      image: "/placeholder.svg?height=200&width=200",
-      linkedin: "https://linkedin.com/in/mohamedsesay",
-      twitter: "https://twitter.com/mohamedsesay",
-    },
-    {
-      id: "3",
-      name: "Fatima Bangura",
-      title: "Head of Innovation",
-      company: "Sierra Leone Commercial Bank",
-      bio: "Driving digital transformation in traditional banking. Expert in fintech partnerships and financial inclusion initiatives across Sierra Leone.",
-      image: "/placeholder.svg?height=200&width=200",
-      linkedin: "https://linkedin.com/in/fatimabangura",
-      twitter: "",
-    },
-  ],
-  agenda: [
-    {
-      id: "1",
-      time: "09:00",
-      title: "Registration & Welcome Coffee",
-      description: "Check-in, networking, and light refreshments",
-      speaker: "",
-    },
-    {
-      id: "2",
-      time: "09:30",
-      title: "Opening Keynote: The Future of Innovation in Sierra Leone",
-      description:
-        "Vision for Sierra Leone's startup ecosystem and emerging opportunities",
-      speaker: "Amara Kamara",
-    },
-    {
-      id: "3",
-      time: "10:30",
-      title: "Panel: Funding Your Startup in West Africa",
-      description:
-        "Insights from investors on what they look for and how to prepare",
-      speaker: "Mohamed Sesay",
-    },
-    {
-      id: "4",
-      time: "11:30",
-      title: "Coffee Break & Networking",
-      description:
-        "Connect with fellow entrepreneurs and potential collaborators",
-      speaker: "",
-    },
-    {
-      id: "5",
-      time: "12:00",
-      title: "Workshop: Digital Banking & Fintech Opportunities",
-      description:
-        "Hands-on session exploring fintech solutions and partnerships",
-      speaker: "Fatima Bangura",
-    },
-    {
-      id: "6",
-      time: "13:00",
-      title: "Lunch & Networking",
-      description: "Catered lunch with structured networking activities",
-      speaker: "",
-    },
-    {
-      id: "7",
-      time: "14:00",
-      title: "Startup Pitch Competition",
-      description: "Selected startups present to panel of judges for prizes",
-      speaker: "",
-    },
-    {
-      id: "8",
-      time: "15:30",
-      title: "Closing Remarks & Next Steps",
-      description: "Summary of key insights and upcoming opportunities",
-      speaker: "Amara Kamara",
-    },
-  ],
-  sponsors: [
-    {
-      id: "1",
-      name: "Sierra Leone Commercial Bank",
-      logo: "/placeholder.svg?height=100&width=200",
-      website: "https://slcb.sl",
-      tier: "platinum",
-    },
-    {
-      id: "2",
-      name: "Orange Sierra Leone",
-      logo: "/placeholder.svg?height=100&width=200",
-      website: "https://orange.sl",
-      tier: "gold",
-    },
-    {
-      id: "3",
-      name: "Freetown City Council",
-      logo: "/placeholder.svg?height=100&width=200",
-      website: "https://fcc.gov.sl",
-      tier: "silver",
-    },
-  ],
-  organizer: {
-    name: "StartUp-SL",
-    logo: "/placeholder.svg?height=60&width=60",
-    description: "Sierra Leone's leading startup ecosystem builder",
-  },
-};
-
-export default function EventDetailPage() {
+export default function EventDetailPage({ event: eventData }: any) {
   const [isRegistered, setIsRegistered] = useState(false);
   const [isFavorited, setIsFavorited] = useState(false);
   const [showFullDescription, setShowFullDescription] = useState(false);
 
   const handleRegister = () => {
     setIsRegistered(true);
-    // In real app, this would make an API call
+
+    eventData.currentAttendees += 1;
+    if (eventData.currentAttendees >= eventData.maxAttendees) {
+      eventData.currentAttendees = eventData.maxAttendees;
+      // Disable further registrations if max attendees reached
+      setIsRegistered(false);
+    } else {
+      setIsRegistered(true);
+    }
+    setIsFavorited(false); // Reset favorite status on registration
+
+    console.log("User registered for event:", eventData.title);
   };
 
   const handleShare = async () => {
@@ -272,7 +130,7 @@ export default function EventDetailPage() {
             {/* Event Info */}
             <div className="flex flex-col justify-center lg:col-span-3">
               <div className="flex flex-wrap gap-2 mb-4">
-                {eventData.tags.slice(0, 4).map((tag) => (
+                {eventData?.tags.slice(0, 4).map((tag: any) => (
                   <Badge
                     key={tag}
                     variant="secondary"
@@ -288,7 +146,7 @@ export default function EventDetailPage() {
               </h1>
 
               <p className="mb-6 text-lg leading-relaxed md:text-xl text-slate-600 dark:text-slate-300">
-                {eventData.shortDescription}
+                {eventData.description}
               </p>
 
               {/* Quick Info Cards */}
@@ -346,7 +204,7 @@ export default function EventDetailPage() {
           {/* Main Content */}
           <div className="space-y-8 xl:col-span-3">
             {/* Event Details */}
-            <Card className="border-0 shadow-xl bg-white/80 backdrop-blur-sm dark:bg-slate-800/80">
+            <Card className="border-0 bg-white/80 backdrop-blur-sm dark:bg-slate-800/80">
               <CardHeader>
                 <CardTitle className="flex items-center gap-3 text-2xl">
                   <div className="p-3 bg-gradient-to-br from-blue-100 to-indigo-100 rounded-xl dark:from-blue-900/30 dark:to-indigo-900/30">
@@ -431,7 +289,7 @@ export default function EventDetailPage() {
             </Card>
 
             {/* Description */}
-            <Card className="border-0 shadow-xl bg-white/80 backdrop-blur-sm dark:bg-slate-800/80">
+            <Card className="border-0 bg-white/80 backdrop-blur-sm dark:bg-slate-800/80">
               <CardHeader>
                 <CardTitle className="flex items-center gap-3 text-2xl">
                   <div className="p-3 bg-gradient-to-br from-emerald-100 to-teal-100 rounded-xl dark:from-emerald-900/30 dark:to-teal-900/30">
@@ -445,9 +303,9 @@ export default function EventDetailPage() {
                   <p className="text-lg leading-relaxed text-slate-700 dark:text-slate-300">
                     {showFullDescription
                       ? eventData.fullDescription
-                      : eventData.shortDescription}
+                      : eventData.description}
                   </p>
-                  {eventData.fullDescription !== eventData.shortDescription && (
+                  {eventData.fullDescription !== eventData.description && (
                     <Button
                       variant="ghost"
                       onClick={() =>
@@ -464,7 +322,7 @@ export default function EventDetailPage() {
 
             {/* Speakers */}
             {eventData.speakers.length > 0 && (
-              <Card className="border-0 shadow-xl bg-white/80 backdrop-blur-sm dark:bg-slate-800/80">
+              <Card className="border-0 bg-white/80 backdrop-blur-sm dark:bg-slate-800/80">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-3 text-2xl">
                     <div className="p-3 bg-gradient-to-br from-violet-100 to-purple-100 rounded-xl dark:from-violet-900/30 dark:to-purple-900/30">
@@ -475,7 +333,7 @@ export default function EventDetailPage() {
                 </CardHeader>
                 <CardContent>
                   <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-                    {eventData.speakers.map((speaker) => (
+                    {eventData.speakers.map((speaker: any) => (
                       <div
                         key={speaker.id}
                         className="flex gap-4 p-4 rounded-2xl bg-slate-50/50 dark:bg-slate-700/50"
@@ -532,7 +390,7 @@ export default function EventDetailPage() {
 
             {/* Agenda */}
             {eventData.agenda.length > 0 && (
-              <Card className="border-0 shadow-xl bg-white/80 backdrop-blur-sm dark:bg-slate-800/80">
+              <Card className="border-0 bg-white/80 backdrop-blur-sm dark:bg-slate-800/80">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-3 text-2xl">
                     <div className="p-3 bg-gradient-to-br from-cyan-100 to-blue-100 rounded-xl dark:from-cyan-900/30 dark:to-blue-900/30">
@@ -543,7 +401,7 @@ export default function EventDetailPage() {
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
-                    {eventData.agenda.map((item, index) => (
+                    {eventData.agenda.map((item: any, index: any) => (
                       <div
                         key={item.id}
                         className="flex gap-4 p-4 rounded-2xl bg-slate-50/50 dark:bg-slate-700/50"
@@ -578,7 +436,7 @@ export default function EventDetailPage() {
 
             {/* Requirements & Accessibility */}
             {(eventData.requirements || eventData.accessibility) && (
-              <Card className="border-0 shadow-xl bg-white/80 backdrop-blur-sm dark:bg-slate-800/80">
+              <Card className="border-0 bg-white/80 backdrop-blur-sm dark:bg-slate-800/80">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-3 text-2xl">
                     <div className="p-3 bg-gradient-to-br from-amber-100 to-orange-100 rounded-xl dark:from-amber-900/30 dark:to-orange-900/30">
@@ -616,7 +474,7 @@ export default function EventDetailPage() {
 
             {/* Sponsors */}
             {eventData.sponsors.length > 0 && (
-              <Card className="border-0 shadow-xl bg-white/80 backdrop-blur-sm dark:bg-slate-800/80">
+              <Card className="border-0 bg-white/80 backdrop-blur-sm dark:bg-slate-800/80">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-3 text-2xl">
                     <div className="p-3 bg-gradient-to-br from-yellow-100 to-orange-100 rounded-xl dark:from-yellow-900/30 dark:to-orange-900/30">
@@ -627,7 +485,7 @@ export default function EventDetailPage() {
                 </CardHeader>
                 <CardContent>
                   <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-                    {eventData.sponsors.map((sponsor) => (
+                    {eventData.sponsors.map((sponsor: any) => (
                       <div
                         key={sponsor.id}
                         className="p-4 text-center rounded-2xl bg-slate-50/50 dark:bg-slate-700/50"
@@ -666,7 +524,7 @@ export default function EventDetailPage() {
           {/* Sidebar */}
           <div className="space-y-6 xl:col-span-1">
             {/* Registration Card */}
-            <Card className="sticky border-0 shadow-xl bg-white/80 backdrop-blur-sm dark:bg-slate-800/80 top-24">
+            <Card className="sticky border-0 bg-white/80 backdrop-blur-sm dark:bg-slate-800/80 top-24">
               <CardContent className="pt-6">
                 <div className="mb-6 text-center">
                   {eventData.eventType === "free" ? (
@@ -780,7 +638,7 @@ export default function EventDetailPage() {
             </Card>
 
             {/* Contact & Links */}
-            <Card className="border-0 shadow-xl bg-white/80 backdrop-blur-sm dark:bg-slate-800/80">
+            <Card className="border-0 bg-white/80 backdrop-blur-sm dark:bg-slate-800/80">
               <CardHeader>
                 <CardTitle className="text-lg">Contact & Links</CardTitle>
               </CardHeader>
@@ -826,30 +684,6 @@ export default function EventDetailPage() {
                     </span>
                   </div>
                 )}
-              </CardContent>
-            </Card>
-
-            {/* Organizer */}
-            <Card className="border-0 shadow-xl bg-white/80 backdrop-blur-sm dark:bg-slate-800/80">
-              <CardHeader>
-                <CardTitle className="text-lg">Organized By</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="flex items-center gap-3">
-                  <img
-                    src={eventData.organizer.logo || "/placeholder.svg"}
-                    alt={eventData.organizer.name}
-                    className="object-cover w-12 h-12 rounded-full"
-                  />
-                  <div>
-                    <h4 className="font-semibold text-slate-900 dark:text-white">
-                      {eventData.organizer.name}
-                    </h4>
-                    <p className="text-sm text-slate-600 dark:text-slate-400">
-                      {eventData.organizer.description}
-                    </p>
-                  </div>
-                </div>
               </CardContent>
             </Card>
           </div>

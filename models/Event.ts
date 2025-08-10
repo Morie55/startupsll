@@ -1,108 +1,85 @@
 import mongoose from "mongoose";
 
-const eventSchema = new mongoose.Schema(
+const { Schema } = mongoose;
+
+const eventSchema = new Schema(
   {
-    title: {
+    title: { type: String, required: true },
+    description: { type: String },
+    fullDescription: { type: String },
+    category: {
       type: String,
-      required: [true, "Event title is required"],
-      trim: true,
-      minlength: [3, "Title must be at least 3 characters"],
-    },
-    description: {
-      type: String,
-      required: [true, "Event description is required"],
-      trim: true,
-      minlength: [10, "Description must be at least 10 characters"],
-    },
-    type: {
-      type: String,
-      required: [true, "Event type is required"],
-      enum: {
-        values: ["In-person", "Virtual", "Hybrid"],
-        message: "{VALUE} is not a valid event type",
-      },
-      default: "In-person",
-    },
-    date: {
-      type: Date,
-      required: [true, "Event date is required"],
-    },
-    time: {
-      type: String,
-      required: [true, "Event time is required"],
-      trim: true,
-    },
-    location: {
-      type: String,
-      required: [true, "Event location is required"],
-      trim: true,
-      minlength: [3, "Location must be at least 3 characters"],
-    },
-    attendees: {
-      type: Number,
-      required: [true, "Maximum attendees is required"],
-      min: [1, "At least 1 attendee is required"],
-    },
-    registeredAttendees: {
-      type: Number,
-      default: 0,
-    },
-    organizer: {
-      type: String, // Changed from ObjectId to String for Clerk user IDs
+      enum: [
+        "networking",
+        "workshop",
+        "meetup",
+        "conference",
+        "investment",
+        "training",
+        "other",
+      ],
       required: true,
     },
-    status: {
+    date: { type: Date, required: true },
+    time: { type: String, required: true },
+    endTime: { type: String },
+    location: { type: String },
+    address: { type: String },
+    maxAttendees: { type: Number },
+    eventType: {
       type: String,
-      enum: ["draft", "published", "cancelled", "completed"],
-      default: "published",
+      enum: ["free", "paid", "donation"],
+      required: true,
     },
-    slug: {
-      type: String,
-      unique: true,
-      lowercase: true,
-    },
-    tags: [
+    ticketPrice: { type: Number, default: 0 },
+    registrationDeadline: { type: Date },
+    contactEmail: { type: String },
+    contactPhone: { type: String },
+    requirements: { type: String },
+    accessibility: { type: String },
+    website: { type: String },
+    socialMedia: { type: String },
+    tags: [{ type: String }],
+
+    speakers: [
       {
-        type: String,
-        trim: true,
+        id: { type: String, required: true },
+        name: { type: String, required: true },
+        title: { type: String },
+        company: { type: String },
+        bio: { type: String },
+        image: { type: String, default: null },
+        linkedin: { type: String },
+        twitter: { type: String },
       },
     ],
-    image: {
-      type: String,
-      default: null,
-    },
+
+    agenda: [
+      {
+        id: { type: String, required: true },
+        time: { type: String, required: true },
+        title: { type: String, required: true },
+        description: { type: String },
+        speaker: { type: String },
+      },
+    ],
+
+    sponsors: [
+      {
+        id: { type: String, required: true },
+        name: { type: String, required: true },
+        logo: { type: String, default: null },
+        website: { type: String },
+        tier: {
+          type: String,
+          enum: ["platinum", "gold", "silver", "bronze"],
+          required: true,
+        },
+      },
+    ],
   },
-  {
-    timestamps: true,
-    toJSON: { virtuals: true },
-    toObject: { virtuals: true },
-  }
+  { timestamps: true }
 );
 
-// Virtual for checking if event is at capacity
-eventSchema.virtual("isAtCapacity").get(function () {
-  return this.registeredAttendees >= this.attendees;
-});
-
-// Pre-save hook to generate slug from title
-eventSchema.pre("save", function (next) {
-  if (!this.isModified("title")) return next();
-
-  this.slug = this.title
-    .toLowerCase()
-    .replace(/[^\w\s]/gi, "")
-    .replace(/\s+/g, "-")
-    .concat("-", Date.now().toString().slice(-4));
-
-  next();
-});
-
-// Index for faster queries
-eventSchema.index({ title: "text", description: "text" });
-eventSchema.index({ date: 1 });
-eventSchema.index({ type: 1 });
-eventSchema.index({ slug: 1 });
-
 const Event = mongoose.models.Event || mongoose.model("Event", eventSchema);
-
 export default Event;
