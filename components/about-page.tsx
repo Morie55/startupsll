@@ -110,7 +110,7 @@ export function AboutPage() {
           {stats.map((stat, index) => (
             <Card
               key={index}
-              className="text-center border-0 shadow-lg bg-white/80 backdrop-blur-sm dark:bg-gray-800"
+              className="text-center border-0 bg-white/80 backdrop-blur-sm dark:bg-gray-800"
             >
               <CardContent className="pt-6">
                 <div className="mb-2 text-3xl font-bold text-primary">
@@ -299,7 +299,7 @@ export function AboutPage() {
                 <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
                   {partners.map((partner, index) => (
                     <div key={index} className="space-y-4 text-center group">
-                      <div className="flex items-center justify-center w-24 h-24 mx-auto transition-all duration-300 shadow-lg rounded-2xl bg-gradient-to-br from-primary/10 to-primary/5 group-hover:from-primary/20 group-hover:to-primary/10">
+                      <div className="flex items-center justify-center w-24 h-24 mx-auto transition-all duration-300 rounded-2xl bg-gradient-to-br from-primary/10 to-primary/5 group-hover:from-primary/20 group-hover:to-primary/10">
                         <partner.icon className="w-12 h-12 text-primary" />
                       </div>
                       <div>

@@ -47,11 +47,15 @@ const NotificationBell = () => {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className="relative h-full p-0 w-20 flex items-center justify-center">
+      <DropdownMenuTrigger className="relative flex items-center justify-center w-20 h-full p-0">
         <Bell className="w-20" size={50} />
-        <div className=" absolute w-6 h-6 text-white bg-red-500 rounded-full  -mt-6 ml-2 z-10 flex justify-center items-start">
-          <span className=" text-[12px] text-center">{notificationsCount}</span>
-        </div>
+        {notifications.length > 0 && (
+          <div className="absolute z-10 flex items-start justify-center w-6 h-6 ml-2 -mt-6 text-white bg-red-500 rounded-full ">
+            <span className=" text-[12px] text-center">
+              {notificationsCount}
+            </span>
+          </div>
+        )}
       </DropdownMenuTrigger>
       <DropdownMenuContent className="h-[400px] w-[300px] overflow-y-auto">
         <DropdownMenuLabel>Notification</DropdownMenuLabel>
@@ -67,11 +71,11 @@ const NotificationBell = () => {
                 <DropdownMenuItem
                   key={i}
                   onClick={() => handleOpenAndMarkRead(notification)}
-                  className="flex-col  items-start cursor-pointer "
+                  className="flex-col items-start cursor-pointer "
                 >
                   <h2 className="font-bold">{notification.title}</h2>
                   <p className="text-xs">{notification.desc}</p>
-                  <span className=" text-xs">{notification.createdAt}</span>
+                  <span className="text-xs ">{notification.createdAt}</span>
                 </DropdownMenuItem>
               );
             } else {
@@ -83,7 +87,7 @@ const NotificationBell = () => {
                 >
                   <h2 className="">{notification.title}</h2>
                   <p className="text-xs">{notification.desc}</p>
-                  <span className=" text-xs">{notification.createdAt}</span>
+                  <span className="text-xs ">{notification.createdAt}</span>
                 </DropdownMenuItem>
               );
             }

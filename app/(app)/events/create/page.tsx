@@ -52,6 +52,7 @@ import {
   ClockIcon,
 } from "lucide-react";
 import { createEvent } from "@/app/actions/event-actions";
+import { Uploader } from "@/components/Uploader";
 
 // Zod validation schema
 const eventFormSchema = z
@@ -61,6 +62,7 @@ const eventFormSchema = z
       .string()
       .min(5, "Title must be at least 5 characters")
       .max(100, "Title must be no more than 100 characters"),
+    banner: z.string().url().optional(),
     description: z
       .string()
       .min(20, "Description must be at least 20 characters")
@@ -436,75 +438,6 @@ export default function CreateEventPage() {
     form.clearErrors("speakers");
   };
 
-  // File handling
-  const handleFileSelect = (file: File) => {
-    if (!file.type.startsWith("image/")) {
-      form.setError("root", { message: "Please select an image file" });
-      return;
-    }
-
-    if (file.size > 10 * 1024 * 1024) {
-      form.setError("root", { message: "Image size must be less than 10MB" });
-      return;
-    }
-
-    const img = new Image();
-    img.onload = () => {
-      if (img.width < 400 || img.height < 400) {
-        form.setError("root", {
-          message: "Image must be at least 400x400 pixels",
-        });
-        return;
-      }
-
-      form.clearErrors("root");
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        setBannerPreview(e.target?.result as string);
-      };
-      reader.readAsDataURL(file);
-
-      if (fileInputRef.current) {
-        const dataTransfer = new DataTransfer();
-        dataTransfer.items.add(file);
-        fileInputRef.current.files = dataTransfer.files;
-      }
-    };
-
-    img.onerror = () => {
-      form.setError("root", { message: "Invalid image file" });
-    };
-
-    img.src = URL.createObjectURL(file);
-  };
-
-  const handleDrop = (e: React.DragEvent) => {
-    e.preventDefault();
-    setIsDragOver(false);
-    const files = Array.from(e.dataTransfer.files);
-    if (files.length > 0) {
-      handleFileSelect(files[0]);
-    }
-  };
-
-  const handleDragOver = (e: React.DragEvent) => {
-    e.preventDefault();
-    setIsDragOver(true);
-  };
-
-  const handleDragLeave = (e: React.DragEvent) => {
-    e.preventDefault();
-    setIsDragOver(false);
-  };
-
-  const removeBanner = () => {
-    setBannerPreview(null);
-    if (fileInputRef.current) {
-      fileInputRef.current.value = "";
-    }
-    form.clearErrors("root");
-  };
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
       {/* Navigation */}
@@ -560,61 +493,20 @@ export default function CreateEventPage() {
                 </p>
               </CardHeader>
               <CardContent>
-                <div
-                  className={`relative border-2 border-dashed rounded-2xl p-8 transition-all duration-200 ${
-                    isDragOver
-                      ? "border-blue-400 bg-blue-50/50 dark:border-blue-500 dark:bg-blue-900/20"
-                      : "border-slate-300 hover:border-slate-400 dark:border-slate-600 dark:hover:border-slate-500"
-                  }`}
-                  onDrop={handleDrop}
-                  onDragOver={handleDragOver}
-                  onDragLeave={handleDragLeave}
-                >
-                  <Input
-                    ref={fileInputRef}
-                    type="file"
-                    name="banner"
-                    accept="image/*"
-                    onChange={(e) => {
-                      const file = e.target.files?.[0];
-                      if (file) handleFileSelect(file);
-                    }}
-                    className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                  />
-                  {bannerPreview ? (
-                    <div className="relative">
-                      <img
-                        src={bannerPreview || "/placeholder.svg"}
-                        alt="Banner preview"
-                        className="object-cover w-full aspect-square rounded-xl"
-                      />
-                      <Button
-                        type="button"
-                        variant="destructive"
-                        size="sm"
-                        className="absolute w-8 h-8 p-0 rounded-full top-3 right-3"
-                        onClick={removeBanner}
-                      >
-                        <X className="w-4 h-4" />
-                      </Button>
-                    </div>
-                  ) : (
-                    <div className="text-center">
-                      <div className="flex items-center justify-center w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-700 dark:to-slate-600">
-                        <Upload className="w-8 h-8 text-slate-500 dark:text-slate-400" />
-                      </div>
-                      <h3 className="mb-2 text-lg font-semibold text-slate-900 dark:text-white">
-                        Upload Event Banner
-                      </h3>
-                      <p className="mb-4 text-slate-600 dark:text-slate-400">
-                        Drag and drop your image here, or click to browse
-                      </p>
-                      <p className="text-sm text-slate-500 dark:text-slate-500">
-                        Supports: JPG, PNG, GIF (min 400x400px, max 10MB)
-                      </p>
-                    </div>
-                  )}
-                </div>
+                <Uploader
+                  multiple={false}
+                  accept={{
+                    "image/*": [".jpg", ".jpeg", ".png", ".gif"],
+                  }}
+                  maxSizeMB={10}
+                  uploadTitle={` Upload an eye-catching banner image for your event
+                  (recommended: 800x800px square, max 10MB)`}
+                  imageClassName="!object-cover  w-[500px] object-top h-[500px]"
+                  className="object-cover p-6 border-2 border-gray-300 border-dashed rounded-lg h-[500px] w-[500px]"
+                  onUploadComplete={(urls: any) =>
+                    form.setValue("banner", urls)
+                  }
+                />
               </CardContent>
             </Card>
 

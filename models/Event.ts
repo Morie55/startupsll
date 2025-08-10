@@ -25,6 +25,7 @@ const eventSchema = new Schema(
     endTime: { type: String },
     location: { type: String },
     address: { type: String },
+    banner: { type: String },
     maxAttendees: { type: Number },
     eventType: {
       type: String,
@@ -75,6 +76,24 @@ const eventSchema = new Schema(
           enum: ["platinum", "gold", "silver", "bronze"],
           required: true,
         },
+      },
+    ],
+
+    attendees: [
+      {
+        id: {
+          type: String,
+          default: () => new mongoose.Types.ObjectId().toString(),
+        },
+        firstName: String,
+        lastName: String,
+        email: String,
+        phone: String,
+        company: String,
+        jobTitle: String,
+        dietaryRequirements: String,
+        specialRequests: String,
+        registrationDate: { type: Date, default: Date.now },
       },
     ],
   },

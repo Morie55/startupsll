@@ -45,9 +45,12 @@ import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { sectorsData } from "@/data/sectors";
 import { companyStages, fundingStatus } from "@/data";
+import { useUser } from "@clerk/nextjs";
 
 export default function CompaniesPage({ companies }: any) {
+  const { user } = useUser();
   const [currentPage, setCurrentPage] = useState(1);
+  s;
   const [pageSize, setPageSize] = useState(5);
   const [searchTerm, setSearchTerm] = useState("");
   const [sectorFilter, setSectorFilter] = useState("All");
@@ -255,15 +258,17 @@ export default function CompaniesPage({ companies }: any) {
                   />
                 </div>
                 <div className="flex flex-col w-full gap-2 sm:flex-row sm:w-auto">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="w-full sm:w-auto"
-                    onClick={exportToPDF}
-                  >
-                    <Download className="w-4 h-4 mr-2" />
-                    Export PDF
-                  </Button>
+                  {user && (
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="w-full sm:w-auto"
+                      onClick={exportToPDF}
+                    >
+                      <Download className="w-4 h-4 mr-2" />
+                      Export PDF
+                    </Button>
+                  )}
                 </div>
               </div>
 

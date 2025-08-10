@@ -21,6 +21,7 @@ import {
   Users2,
   ShieldCheck,
   Share2,
+  User2,
 } from "lucide-react";
 import {
   DropdownMenu,
@@ -108,10 +109,12 @@ export default function ClientLayout({
           </div>
 
           <div className="flex items-center justify-between gap-4 ml-auto">
-            <Button variant="ghost" size="icon" className="relative">
-              <NotificationBell />
-              <span className="sr-only">Notifications</span>
-            </Button>
+            {user && (
+              <Button variant="ghost" size="icon" className="relative">
+                <NotificationBell />
+                <span className="sr-only">Notifications</span>
+              </Button>
+            )}
             <ThemeToggle />
             <div>
               {user ? (
@@ -147,12 +150,13 @@ export default function ClientLayout({
                   </DropdownMenuContent>
                 </DropdownMenu>
               ) : (
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 ">
                   <Link href="/sign-in">
-                    <Button>Sign In</Button>
+                    <User2 className="md:hidden" />
+                    <Button className="max-md:hidden">Sign In</Button>
                   </Link>
 
-                  <Link href="/sign-up">
+                  <Link href="/sign-up" className="max-md:hidden">
                     <Button variant={"outline"} className="">
                       Sign Up
                     </Button>
@@ -183,6 +187,7 @@ export default function ClientLayout({
                 <div className="px-2 space-y-1">
                   {navigation.map((item) => (
                     <Link
+                      onClick={() => setSidebarOpen(false)}
                       key={item.name}
                       href={item.href}
                       className={cn(

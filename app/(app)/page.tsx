@@ -1,7 +1,10 @@
 import { HomePage } from "@/components/home-page";
 import { geDashboardStats } from "../actions/dashboardStat";
+import { fetchEvents } from "../actions/event-actions";
 
 export default async function Home() {
   const stats = await geDashboardStats();
-  return <HomePage stats={stats} />;
+  const upcomingEvents =
+    (await fetchEvents({ type: "upcoming" })).events?.slice(0, 4) || [];
+  return <HomePage stats={stats} upcomingEvents={upcomingEvents} />;
 }

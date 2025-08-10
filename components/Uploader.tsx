@@ -14,6 +14,7 @@ export function Uploader({
   accept = { "image/*": [] },
   onUploadComplete,
   className = "",
+  imageClassName = "object-cover w-full h-full",
   uploadTitle = "Upload File",
   maxSizeMB = 10,
 }: {
@@ -21,6 +22,7 @@ export function Uploader({
   accept?: { [mime: string]: string[] };
   onUploadComplete: (urls: string[] | string) => void;
   className?: string;
+  imageClassName?: string;
   uploadTitle?: string;
   maxSizeMB?: number;
 }) {
@@ -226,7 +228,7 @@ export function Uploader({
                       <img
                         src={f.objectUrl}
                         alt={f.file.name}
-                        className="object-cover w-full h-full"
+                        className={`${imageClassName}`}
                       />
                     );
                   } else if (f.file.type.startsWith("video/")) {

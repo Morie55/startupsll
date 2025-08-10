@@ -2,6 +2,7 @@
 
 import { connect } from "@/lib/mongoDB";
 import Event from "@/models/Event";
+import { error } from "console";
 
 // Define filters type
 interface FetchEventsParams {
@@ -90,5 +91,58 @@ export async function fetchEventById(id: string): Promise<{
   } catch (error) {
     console.error("Error fetching event by ID:", error);
     return { success: false, error: (error as Error).message };
+  }
+}
+
+export async function addAttendee(eventId: string, attendeeData: any) {
+  try {
+    await connect();
+    const event = await Event.findById(eventId);
+    if (!event) {
+      throw new Error("Event not found");
+    }
+
+    // Optional: Check registration deadline
+    if (event.registrationDeadline && event.registrationDeadline < new Date()) {
+      throw new Error("Registration for this event is closed");
+    }
+
+    // Optional: Check max attendees limit
+    if (
+      typeof event.maxAttendees === "number" &&
+      event.attendees.length >= event.maxAttendees
+    ) {
+      throw new Error("This event is full");
+    }
+
+    // Optional: Prevent duplicate emails
+    const alreadyRegistered = event.attendees.some(
+      (attendee: any) =>
+        attendee.email.toLowerCase() === attendeeData.email.toLowerCase()
+    );
+    if (alreadyRegistered) {
+      throw new Error("This email is already registered for the event");
+    }
+
+    // Add new attendee
+    event.attendees.push({
+      firstName: attendeeData.firstName,
+      lastName: attendeeData.lastName,
+      email: attendeeData.email,
+      phone: attendeeData.phone,
+      company: attendeeData.company,
+      jobTitle: attendeeData.jobTitle,
+      dietaryRequirements: attendeeData.dietaryRequirements,
+      specialRequests: attendeeData.specialRequests,
+    });
+
+    await event.save();
+
+    return JSON.parse(JSON.stringify({ success: true, error }));
+  } catch (error) {
+    console.error("Error adding attendee:", (error as Error).message);
+    return JSON.parse(
+      JSON.stringify({ success: false, error: (error as Error).message })
+    );
   }
 }

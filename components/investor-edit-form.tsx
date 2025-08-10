@@ -304,14 +304,26 @@ export default function InvestorEditForm({ investor }: any) {
                     <FormItem>
                       <FormLabel>Logo URL</FormLabel>
                       <FormControl>
-                        <Input
+                        {/* <Input
                           placeholder="https://example.com/ilogo.png"
                           {...field}
+                        /> */}
+
+                        <Uploader
+                          multiple={false}
+                          accept={{
+                            "image/*": [".jpg", ".jpeg", ".png", ".gif"],
+                          }}
+                          maxSizeMB={10}
+                          uploadTitle={` Upload investor logo`}
+                          imageClassName="!object-cover  !w-[300px] object-top !h-[300px]"
+                          className="object-cover p-6 border-2 border-gray-300 border-dashed rounded-lg !h-[300px] !w-[300px]"
+                          onUploadComplete={(urls: any) =>
+                            form.setValue("logo", urls)
+                          }
                         />
                       </FormControl>
-                      <FormDescription>
-                        Enter a URL to your company logo
-                      </FormDescription>
+                      <FormDescription>Upload investor logo</FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}
