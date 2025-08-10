@@ -100,7 +100,7 @@ export async function updateInterestData(id: string, data: any) {
     await sendNotification({
       title: "Company respond to your investment interest",
       desc: `${company?.name} has respond to the interest you have show for their funding rounds `,
-      from: company?.company.userid,
+      from: company?.userId,
       to: interest.userId,
       url: `/investor-interest/interest/${interest._id}`,
     });
