@@ -30,7 +30,7 @@ const team = [
     id: 1,
     name: "Francis Stevens George",
     role: "Executive Director",
-    image: "/images/FrancisGeorge.png",
+    image: "/images/FrancisGeorge.jpg",
     bio: "Mr. Francis has over 25 years of experience in entrepreneurship and ecosystem building, leading strategic initiatives across the world.",
     expertise: ["Strategy", "Leadership", "Ecosystem Building"],
   },
