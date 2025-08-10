@@ -77,8 +77,8 @@ const partners = [
     icon: Award,
   },
   {
-    name: "Innovation Hub",
-    description: "Co-working and incubation space provider",
+    name: "Innovation SL",
+    description: "Local leading incubator for startups  and entrepreneurs.",
     icon: Users,
   },
 ];
