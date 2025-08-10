@@ -38,7 +38,7 @@ const team = [
     id: 2,
     name: "Ngevao Sesay",
     role: "Head of Programs",
-    image: "/placeholder.svg?height=400&width=400",
+    image: "/images/NgevaoSesay.png",
     bio: "Ngevao leads our startup support programs and mentorship initiatives, with a focus on sustainable business development.",
     expertise: ["Program Management", "Mentorship", "Business Development"],
   },
