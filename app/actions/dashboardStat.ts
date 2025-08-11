@@ -101,6 +101,7 @@ export async function geDashboardStats() {
         },
         hotCompanys: allCompanies.slice(0, 4),
         newCompany: allCompanies.slice(0, 4),
+        newRounds: allRounds.slice(0, 4),
       })
     );
   } catch (error) {

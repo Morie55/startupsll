@@ -124,12 +124,19 @@ export function InvestorProvider({ children }: { children: ReactNode }) {
 
   const fetchInvestors = useCallback(
     async (filters?: {
-      userId?: string;
-      sectorInterested?: string;
-      type?: string;
-      search?: string;
-      page?: number;
-      limit?: number;
+      // userId?: string;
+      // sectorInterested?: string;
+      // type?: string;
+      // search?: string;
+      // page?: number;
+      // limit?: number;
+
+      status: string;
+      sectorInterested: string | undefined;
+      location: string | undefined;
+      type: string | undefined;
+      fundingMin: number | undefined;
+      fundingMax: number | undefined;
     }) => {
       setLoading(true);
       setError(null);

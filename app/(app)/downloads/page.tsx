@@ -1,6 +1,8 @@
-import { DownloadsPage } from "@/components/downloads-page"
+import { getResources } from "@/app/actions/resource-actions";
+import { DownloadsPage } from "@/components/downloads-page";
+import { get } from "lodash";
 
-export default function Downloads() {
-  return <DownloadsPage />
+export default async function Downloads() {
+  const reports = await getResources();
+  return <DownloadsPage reports={reports} />;
 }
-

@@ -1,31 +1,42 @@
 "use client";
 
+import React, {
+  forwardRef,
+  useImperativeHandle,
+  useCallback,
+  useState,
+  useEffect,
+} from "react";
 import { cn } from "@/lib/utils";
 import { Card, CardContent } from "./ui/card";
 import { Button } from "./ui/button";
 import { FileRejection, useDropzone } from "react-dropzone";
-import { useCallback, useState, useEffect } from "react";
 import { toast } from "sonner";
 import { v4 as uuidv4 } from "uuid";
 import { Loader2, Trash2, Upload } from "lucide-react";
 
-export function Uploader({
-  multiple = false,
-  accept = { "image/*": [] },
-  onUploadComplete,
-  className = "",
-  imageClassName = "object-cover w-full h-full",
-  uploadTitle = "Upload File",
-  maxSizeMB = 10,
-}: {
-  multiple?: boolean;
-  accept?: { [mime: string]: string[] };
-  onUploadComplete: (urls: string[] | string) => void;
-  className?: string;
-  imageClassName?: string;
-  uploadTitle?: string;
-  maxSizeMB?: number;
-}) {
+export const Uploader = forwardRef(function Uploader(
+  {
+    multiple = false,
+    accept = { "image/*": [] },
+    onUploadComplete,
+    className = "",
+    imageClassName = "object-cover w-full h-full",
+    uploadTitle = "Upload File",
+    maxSizeMB = 10,
+    resetSignal = false,
+  }: {
+    multiple?: boolean;
+    accept?: { [mime: string]: string[] };
+    onUploadComplete: (urls: string[] | string) => void;
+    className?: string;
+    imageClassName?: string;
+    uploadTitle?: string;
+    maxSizeMB?: number;
+    resetSignal?: boolean;
+  },
+  ref: React.Ref<{ reset: () => void }>
+) {
   const [files, setFiles] = useState<any[]>([]);
 
   const removeFile = async (fileId: string) => {
@@ -182,6 +193,25 @@ export function Uploader({
       files.forEach((f) => f.objectUrl && URL.revokeObjectURL(f.objectUrl));
   }, [files]);
 
+  // Clear files and notify parent
+  const handleReset = () => {
+    files.forEach((f) => f.objectUrl && URL.revokeObjectURL(f.objectUrl));
+    setFiles([]);
+    onUploadComplete(multiple ? [] : "");
+  };
+
+  // Expose handleReset via ref
+  useImperativeHandle(ref, () => ({
+    reset: handleReset,
+  }));
+
+  // You can keep this or remove if you don't want automatic reset on resetSignal
+  useEffect(() => {
+    if (resetSignal) {
+      handleReset();
+    }
+  }, [resetSignal]);
+
   return (
     <>
       {(multiple || files.length === 0) && (
@@ -189,7 +219,7 @@ export function Uploader({
           {...getRootProps()}
           className={cn(
             "border-2 border-dashed w-full cursor-pointer rounded-lg transition-all duration-200",
-            "h-40 sm:h-48 md:h-56 lg:h-64", // Responsive height
+            "h-40 sm:h-48 md:h-56 lg:h-64",
             isDragActive
               ? "border-primary bg-primary/10"
               : "border-border hover:border-primary",
@@ -279,4 +309,4 @@ export function Uploader({
       )}
     </>
   );
-}
+});

@@ -13,6 +13,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
+import { formatDate } from "@/lib/formatDate";
 
 const reports = [
   {
@@ -92,7 +93,7 @@ const reports = [
   },
 ];
 
-export function DownloadsPage() {
+export function DownloadsPage({ reports }: any) {
   return (
     <div className="flex flex-col gap-6 p-6 md:gap-8 md:p-8">
       <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
@@ -123,161 +124,53 @@ export function DownloadsPage() {
                 />
               </div>
               <Button variant="outline" size="sm" className="md:w-auto">
-                <Filter className="mr-2 h-4 w-4" />
+                <Filter className="w-4 h-4 mr-2" />
                 Filters
               </Button>
             </div>
 
-            <Tabs defaultValue="all" className="w-full">
-              <TabsList>
-                <TabsTrigger value="all">All Resources</TabsTrigger>
-                <TabsTrigger value="reports">Reports</TabsTrigger>
-                <TabsTrigger value="guides">Guides</TabsTrigger>
-                <TabsTrigger value="data">Data</TabsTrigger>
-              </TabsList>
-              <TabsContent value="all" className="mt-4">
-                <div className="grid gap-4 md:grid-cols-2">
-                  {reports.map((report) => (
-                    <Card key={report.id} className="flex">
-                      <div className="flex flex-1 items-start p-4">
-                        <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-md bg-primary/10 text-primary">
-                          <FileText className="h-5 w-5" />
-                        </div>
-                        <div className="ml-4 flex-1">
-                          <h3 className="font-medium">{report.title}</h3>
-                          <p className="mt-1 text-sm text-muted-foreground">
-                            {report.description}
-                          </p>
-                          <div className="mt-2 flex items-center gap-2">
-                            <Badge variant="outline" className="text-xs">
-                              {report.type}
-                            </Badge>
-                            <span className="text-xs text-muted-foreground">
-                              {report.size}
-                            </span>
-                            <span className="text-xs text-muted-foreground">
-                              {report.date}
-                            </span>
-                          </div>
-                        </div>
-                        <Button variant="ghost" size="icon" className="ml-2">
-                          <Download className="h-4 w-4" />
-                          <span className="sr-only">Download</span>
-                        </Button>
+            <div className="grid gap-4 md:grid-cols-2">
+              {reports.map((report: any) => (
+                <Card key={report.id} className="flex">
+                  <div className="flex items-start flex-1 p-4">
+                    <div className="flex items-center justify-center flex-shrink-0 w-10 h-10 rounded-md bg-primary/10 text-primary">
+                      <FileText className="w-5 h-5" />
+                    </div>
+                    <div className="flex-1 ml-4">
+                      <h3 className="font-medium">{report.title}</h3>
+                      <p className="mt-1 text-sm text-muted-foreground">
+                        {report.description}
+                      </p>
+                      <div className="flex items-center gap-2 mt-2">
+                        <Badge variant="outline" className="text-xs">
+                          {report.fileType}
+                        </Badge>
+                        {/* <span className="text-xs text-muted-foreground">
+                          {report.size}
+                        </span> */}
+                        <span className="text-xs text-muted-foreground">
+                          {formatDate(report.date)}
+                        </span>
                       </div>
-                    </Card>
-                  ))}
-                </div>
-              </TabsContent>
-              <TabsContent value="reports" className="mt-4">
-                <div className="grid gap-4 md:grid-cols-2">
-                  {reports
-                    .filter((r) => r.category.includes("Report"))
-                    .map((report) => (
-                      <Card key={report.id} className="flex">
-                        <div className="flex flex-1 items-start p-4">
-                          <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-md bg-primary/10 text-primary">
-                            <FileText className="h-5 w-5" />
-                          </div>
-                          <div className="ml-4 flex-1">
-                            <h3 className="font-medium">{report.title}</h3>
-                            <p className="mt-1 text-sm text-muted-foreground">
-                              {report.description}
-                            </p>
-                            <div className="mt-2 flex items-center gap-2">
-                              <Badge variant="outline" className="text-xs">
-                                {report.type}
-                              </Badge>
-                              <span className="text-xs text-muted-foreground">
-                                {report.size}
-                              </span>
-                              <span className="text-xs text-muted-foreground">
-                                {report.date}
-                              </span>
-                            </div>
-                          </div>
-                          <Button variant="ghost" size="icon" className="ml-2">
-                            <Download className="h-4 w-4" />
-                            <span className="sr-only">Download</span>
-                          </Button>
-                        </div>
-                      </Card>
-                    ))}
-                </div>
-              </TabsContent>
-              <TabsContent value="guides" className="mt-4">
-                <div className="grid gap-4 md:grid-cols-2">
-                  {reports
-                    .filter((r) => r.category === "Guide")
-                    .map((report) => (
-                      <Card key={report.id} className="flex">
-                        <div className="flex flex-1 items-start p-4">
-                          <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-md bg-primary/10 text-primary">
-                            <FileText className="h-5 w-5" />
-                          </div>
-                          <div className="ml-4 flex-1">
-                            <h3 className="font-medium">{report.title}</h3>
-                            <p className="mt-1 text-sm text-muted-foreground">
-                              {report.description}
-                            </p>
-                            <div className="mt-2 flex items-center gap-2">
-                              <Badge variant="outline" className="text-xs">
-                                {report.type}
-                              </Badge>
-                              <span className="text-xs text-muted-foreground">
-                                {report.size}
-                              </span>
-                              <span className="text-xs text-muted-foreground">
-                                {report.date}
-                              </span>
-                            </div>
-                          </div>
-                          <Button variant="ghost" size="icon" className="ml-2">
-                            <Download className="h-4 w-4" />
-                            <span className="sr-only">Download</span>
-                          </Button>
-                        </div>
-                      </Card>
-                    ))}
-                </div>
-              </TabsContent>
-              <TabsContent value="data" className="mt-4">
-                <div className="grid gap-4 md:grid-cols-2">
-                  {reports
-                    .filter((r) => r.category === "Database")
-                    .map((report) => (
-                      <Card key={report.id} className="flex">
-                        <div className="flex flex-1 items-start p-4">
-                          <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-md bg-primary/10 text-primary">
-                            <FileText className="h-5 w-5" />
-                          </div>
-                          <div className="ml-4 flex-1">
-                            <h3 className="font-medium">{report.title}</h3>
-                            <p className="mt-1 text-sm text-muted-foreground">
-                              {report.description}
-                            </p>
-                            <div className="mt-2 flex items-center gap-2">
-                              <Badge variant="outline" className="text-xs">
-                                {report.type}
-                              </Badge>
-                              <span className="text-xs text-muted-foreground">
-                                {report.size}
-                              </span>
-                              <span className="text-xs text-muted-foreground">
-                                {report.date}
-                              </span>
-                            </div>
-                          </div>
-                          <Button variant="ghost" size="icon" className="ml-2">
-                            <Download className="h-4 w-4" />
-                            <span className="sr-only">Download</span>
-                          </Button>
-                        </div>
-                      </Card>
-                    ))}
-                </div>
-              </TabsContent>
-            </Tabs>
+                    </div>
+
+                    <a
+                      href={report.fileUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      download={report.title}
+                      className="inline-flex items-center justify-center text-sm font-medium transition-colors rounded-md whitespace-nowrap ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9"
+                      title={`Download ${report.title}`}
+                    >
+                      <Button variant="ghost" size="icon" className="ml-2">
+                        <Download className="w-4 h-4" />
+                        <span className="sr-only">Download</span>
+                      </Button>
+                    </a>
+                  </div>
+                </Card>
+              ))}
+            </div>
           </div>
         </CardContent>
       </Card>

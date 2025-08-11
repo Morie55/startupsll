@@ -6,6 +6,8 @@ import {
   Building2,
   Calendar,
   ChevronRight,
+  DollarSign,
+  Percent,
   TrendingUp,
   Users,
 } from "lucide-react";
@@ -28,8 +30,11 @@ import { NewCompaniesList } from "@/components/new-companies-list";
 import { Separator } from "@radix-ui/react-dropdown-menu";
 import FundingRounds from "@/app/(app)/funding-rounds/page";
 import RoundsTable from "./rounds-table";
+import Link from "next/link";
+import { formatDate } from "@/lib/formatDate";
+import { Progress } from "./ui/progress";
 
-export function DashboardPage({ stats }: any) {
+export function DashboardPage({ stats, rounds }: any) {
   // const [searchQuery, setSearchQuery] = useState("");
 
   return (
@@ -187,7 +192,74 @@ export function DashboardPage({ stats }: any) {
           <HotStartupsList hotCompanys={stats.hotCompanys} />
         </TabsContent>
         <TabsContent value="recent-rounds" className="mt-4">
-          <RoundsTable />
+          <div>
+            <h2 className="mb-4 text-xl font-bold tracking-tight">
+              Recent Funding Rounds
+            </h2>
+
+            <div className="grid grid-cols-2 gap-4 ">
+              {rounds?.map((round: any, i: number) => (
+                <Card className="transition-shadow border border-gray-200 hover:shadow-md">
+                  <CardHeader>
+                    <CardTitle className="text-lg font-semibold">
+                      {round.roundTitle}{" "}
+                      <span className="text-sm text-muted-foreground">
+                        ({round.roundType})
+                      </span>
+                    </CardTitle>
+                    <p className="text-sm text-gray-600">
+                      By{" "}
+                      <Link
+                        href={`/companies/${round.companyId}`}
+                        className="text-blue-600 hover:underline"
+                      >
+                        {round.companyName}
+                      </Link>
+                    </p>
+                  </CardHeader>
+
+                  <CardContent className="space-y-4">
+                    {/* Funding details grid */}
+                    {/* <div className="grid grid-cols-2 gap-3 text-sm text-gray-700">
+                      <div className="flex items-center space-x-2">
+                        <DollarSign className="w-4 h-4 text-green-600" />
+                        <span className="font-medium">Goal:</span>
+                        <span>
+                          ${Number(round.fundingGoal).toLocaleString()}
+                        </span>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <TrendingUp className="w-4 h-4 text-indigo-600" />
+                        <span className="font-medium">Valuation:</span>
+                        <span>${Number(round.valuation).toLocaleString()}</span>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <Percent className="w-4 h-4 text-pink-600" />
+                        <span className="font-medium">Equity:</span>
+                        <span>{round.equityOffered}</span>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <Calendar className="w-4 h-4 text-orange-600" />
+                        <span className="font-medium">Open:</span>
+                        <span>
+                          <span>{formatDate(round.openDate)}</span>
+                        </span>
+                      </div>
+                    </div> */}
+
+                    {/* Progress bar */}
+                    <div>
+                      <div className="flex justify-between mb-1 text-xs text-gray-500">
+                        <span>Progress</span>
+                        <span>{round.progress}%</span>
+                      </div>
+                      <Progress value={round.progress} className="h-2" />
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
         </TabsContent>
         <TabsContent value="new-companies" className="mt-4">
           <NewCompaniesList newCompany={stats.newCompany} />
