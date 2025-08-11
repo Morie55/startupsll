@@ -27,13 +27,17 @@ import { useEffect, useState } from "react";
 import { getLatestStartups } from "@/app/actions/lastest-startups";
 // Fix: Import the TypeScript interface instead of the Mongoose model
 import type { Company } from "@/types/company";
+import { date } from "zod";
+import { formatDate } from "@/lib/formatDate";
 
 export function HomePage({
   stats,
   upcomingEvents,
+  reports,
 }: {
   stats: any;
   upcomingEvents: any;
+  reports: any;
 }) {
   const { user, isLoaded } = useUser();
   const router = useRouter();
@@ -234,22 +238,29 @@ export function HomePage({
           </CardHeader>
           <CardContent>
             <ul className="space-y-2">
-              <li className="flex items-center justify-between">
-                <span>Startup Ecosystem Report 2024</span>
-                <Button variant="ghost" size="sm" asChild>
-                  <Link href="/downloads">
-                    Download <Download className="w-4 h-4 ml-1" />
-                  </Link>
-                </Button>
-              </li>
-              <li className="flex items-center justify-between">
-                <span>Funding Trends Q1 2024</span>
-                <Button variant="ghost" size="sm" asChild>
-                  <Link href="/downloads">
-                    Download <Download className="w-4 h-4 ml-1" />
-                  </Link>
-                </Button>
-              </li>
+              {reports?.map((report: any, i: any) => (
+                <li className="flex items-center justify-between">
+                  <div>
+                    <p>Startup Ecosystem Report 2024</p>
+                    <span className="text-sm text-muted-foreground">
+                      {formatDate(report.date)}
+                    </span>
+                  </div>
+                  <a
+                    href={report.fileUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    download={report.title}
+                    className="inline-flex items-center justify-center text-sm font-medium transition-colors rounded-md whitespace-nowrap ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 w-9"
+                    title={`Download ${report.title}`}
+                  >
+                    <Button variant="ghost" className="ml-2">
+                      <Download className="w-4 h-4" />
+                      <span className="sr-only">Download</span>
+                    </Button>
+                  </a>
+                </li>
+              ))}
             </ul>
           </CardContent>
         </Card>
