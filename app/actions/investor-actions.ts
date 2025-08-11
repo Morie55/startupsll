@@ -59,12 +59,6 @@ export async function updateInvestorAction(id: string, data: any) {
 
 // Get all investors with filters
 export async function getInvestorsAction(filters?: {
-  // sectorInterested?: string;
-  // type?: string;
-  // search?: string;
-  // page?: number;
-  // status?: string;
-
   status: string;
   sectorInterested: string | undefined;
   location: string | undefined;
