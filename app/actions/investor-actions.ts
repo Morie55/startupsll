@@ -59,17 +59,23 @@ export async function updateInvestorAction(id: string, data: any) {
 
 // Get all investors with filters
 export async function getInvestorsAction(filters?: {
-  userId?: string;
-  sectorInterested?: string;
-  type?: string;
-  search?: string;
-  page?: number;
-  limit?: number;
+  // sectorInterested?: string;
+  // type?: string;
+  // search?: string;
+  // page?: number;
+  // status?: string;
+
+  status: string;
+  sectorInterested: string | undefined;
+  location: string | undefined;
+  type: string | undefined;
+  fundingMin: number | undefined;
+  fundingMax: number | undefined;
 }) {
   try {
     await connect();
-    console.log(filters);
-    const result = await Investor.find();
+
+    const result = await Investor.find(filters!);
 
     return JSON.parse(JSON.stringify({ success: true, data: result }));
   } catch (error) {
@@ -325,6 +331,7 @@ export interface InvestorFilters {
   sortDirection?: "asc" | "desc";
   page?: number;
   limit?: number;
+  status?: string;
 }
 
 export interface InvestorResponse {

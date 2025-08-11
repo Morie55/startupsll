@@ -57,6 +57,7 @@ export default function InvestorDirectory() {
       setLoading(true);
       try {
         const filters = {
+          status: "approved",
           sectorInterested: sector || undefined,
           location: location || undefined,
           type: stage || undefined,
@@ -104,7 +105,7 @@ export default function InvestorDirectory() {
     sector || location || stage || fundingMin || fundingMax;
 
   const renderFilters = () => (
-    <div className="w-full lg:w-64 flex-shrink-0">
+    <div className="flex-shrink-0 w-full lg:w-64">
       <div className="sticky top-4">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-lg font-semibold">Filters</h2>
@@ -116,7 +117,7 @@ export default function InvestorDirectory() {
               className="h-8 text-xs"
             >
               Clear all
-              <X className="ml-1 h-3 w-3" />
+              <X className="w-3 h-3 ml-1" />
             </Button>
           )}
         </div>
@@ -136,16 +137,16 @@ export default function InvestorDirectory() {
   );
 
   return (
-    <div className="flex flex-col md:flex-row gap-6">
+    <div className="flex flex-col gap-6 md:flex-row">
       {/* Mobile filter button */}
       {isMobile && (
         <Sheet open={filtersOpen} onOpenChange={setFiltersOpen}>
           <SheetTrigger asChild>
-            <Button variant="outline" className="mb-4 w-full md:hidden">
-              <SlidersHorizontal className="mr-2 h-4 w-4" />
+            <Button variant="outline" className="w-full mb-4 md:hidden">
+              <SlidersHorizontal className="w-4 h-4 mr-2" />
               Filters
               {hasActiveFilters && (
-                <span className="ml-2 rounded-full bg-primary w-5 h-5 text-xs flex items-center justify-center text-primary-foreground">
+                <span className="flex items-center justify-center w-5 h-5 ml-2 text-xs rounded-full bg-primary text-primary-foreground">
                   {
                     Object.values({
                       sector,
@@ -173,7 +174,7 @@ export default function InvestorDirectory() {
       {/* Investors grid */}
       <div className="flex-1">
         {loading ? (
-          <div className="grid grid-cols-1 md:grid-cols-2  gap-6">
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
             {[...Array(6)].map((_, i) => (
               <div
                 key={i}
@@ -182,15 +183,15 @@ export default function InvestorDirectory() {
             ))}
           </div>
         ) : investors.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
             {investors.map((investor: any) => (
               <InvestorCard key={investor?._id} investor={investor} />
             ))}
           </div>
         ) : (
-          <div className="text-center py-12 bg-muted/30 rounded-lg">
+          <div className="py-12 text-center rounded-lg bg-muted/30">
             <h3 className="text-lg font-medium">No investors found</h3>
-            <p className="text-muted-foreground mt-2">
+            <p className="mt-2 text-muted-foreground">
               Try adjusting your filters or check back later.
             </p>
             {hasActiveFilters && (

@@ -9,6 +9,7 @@ interface FetchEventsParams {
   type?: "upcoming" | "past";
   category?: string;
   search?: string;
+  status?: string;
 }
 
 // 1️⃣ Create Event
@@ -35,10 +36,12 @@ export async function fetchEvents({
   type,
   category,
   search,
+  status,
 }: FetchEventsParams): Promise<{
-  success: boolean;
+  success?: boolean;
   events?: any[];
   error?: string;
+  status?: string;
 }> {
   await connect();
 
@@ -55,6 +58,10 @@ export async function fetchEvents({
   // 📌 Filter by category
   if (category && category !== "All Categories") {
     query.category = category.toLowerCase();
+  }
+
+  if (status) {
+    query.status = status;
   }
 
   // 📌 Filter by upcoming or past
@@ -144,5 +151,32 @@ export async function addAttendee(eventId: string, attendeeData: any) {
     return JSON.parse(
       JSON.stringify({ success: false, error: (error as Error).message })
     );
+  }
+}
+
+export async function handleStatusChangeWithReason(
+  id: string,
+  status: string,
+  reason: string
+) {
+  try {
+    const event = await Event.findById(id);
+    if (!event) {
+      throw new Error("Event not found");
+    }
+
+    // Update status and add to history
+    event.status = status;
+    event.save();
+    // event.statusHistory.push({
+    //   action: status,
+    //   reason,
+    //   actionBy: "admin", // Replace with actual user ID or name
+    //   actionDate: new Date(),
+    // });
+    return JSON.parse(JSON.stringify({ success: true, event }));
+  } catch (error) {
+    console.error("Error updating event status:", (error as Error).message);
+    throw new Error((error as Error).message);
   }
 }

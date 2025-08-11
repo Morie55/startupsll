@@ -58,6 +58,7 @@ export default function InvestorDetails({ investor }: any) {
     }
   };
 
+  console.log(investor.statusHistory);
   return (
     <div className="p-6">
       <div className="flex flex-col gap-6">
@@ -65,7 +66,7 @@ export default function InvestorDetails({ investor }: any) {
         <div className="flex items-center justify-between">
           <Button variant="ghost" size="sm" asChild>
             <Link href="/investors">
-              <ArrowLeft className="mr-2 h-4 w-4" />
+              <ArrowLeft className="w-4 h-4 mr-2" />
               Back to Investors
             </Link>
           </Button>
@@ -73,7 +74,7 @@ export default function InvestorDetails({ investor }: any) {
             {user?.id === investor?.userId && (
               <Button variant="outline" size="sm" asChild>
                 <Link href={`/investors/${investor?._id}/edit`}>
-                  <Edit className="mr-2 h-4 w-4" />
+                  <Edit className="w-4 h-4 mr-2" />
                   Edit
                 </Link>
               </Button>
@@ -81,13 +82,46 @@ export default function InvestorDetails({ investor }: any) {
           </div>
         </div>
 
+        {investor?.status === "pending" && (
+          <div className="flex items-center h-16 p-4 bg-yellow-100 border border-yellow-500 rounded-md ">
+            <AlertTriangle className="w-6 h-6 mr-2 text-yellow-600" />
+            <span className="text-sm text-yellow-800">
+              This investor profile is currently pending approval.
+            </span>
+          </div>
+        )}
+
+        {investor?.status === "rejected" && (
+          <div className="flex items-center h-16 p-4 bg-red-100 border border-red-500 rounded-md ">
+            <AlertTriangle className="w-6 h-6 mr-2 text-red-600" />
+            <span className="text-sm text-red-800">
+              Rejected:{" "}
+              {investor?.statusHistory?.length > 0
+                ? investor?.statusHistory[0].reason
+                : " Your investor profile has been rejected. Please review your details."}
+            </span>
+          </div>
+        )}
+
+        {investor?.status === "suspended" && (
+          <div className="flex items-center h-16 p-4 bg-red-100 border border-red-500 rounded-md ">
+            <AlertTriangle className="w-6 h-6 mr-2 text-red-600" />
+            <span className="text-sm text-red-800">
+              Suspended:{" "}
+              {investor?.statusHistory?.length > 0
+                ? investor?.statusHistory?.at(-1)?.reason
+                : " Your investor profile has been suspended. Please review your details."}
+            </span>
+          </div>
+        )}
+
         {/* Main content */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
           {/* Left column - Basic info */}
           <Card className="md:col-span-1">
             <CardHeader className="pb-2">
               <div className="flex flex-col items-center text-center">
-                <div className="relative w-24 h-24 rounded-md overflow-hidden bg-muted mb-4 flex items-center justify-center">
+                <div className="relative flex items-center justify-center w-24 h-24 mb-4 overflow-hidden rounded-md bg-muted">
                   {investor?.logo ? (
                     <Image
                       src={investor?.logo || "/placeholder.svg"}
@@ -96,7 +130,7 @@ export default function InvestorDetails({ investor }: any) {
                       className="object-cover"
                     />
                   ) : (
-                    <Building2 className="h-12 w-12 text-muted-foreground" />
+                    <Building2 className="w-12 h-12 text-muted-foreground" />
                   )}
                 </div>
                 <CardTitle className="text-xl">{investor?.name}</CardTitle>
@@ -111,19 +145,19 @@ export default function InvestorDetails({ investor }: any) {
               <div className="space-y-4">
                 {investor?.location && (
                   <div className="flex items-center text-sm">
-                    <MapPin className="h-4 w-4 mr-2 text-muted-foreground" />
+                    <MapPin className="w-4 h-4 mr-2 text-muted-foreground" />
                     <span>{investor?.location}</span>
                   </div>
                 )}
                 {investor?.foundedAt && (
                   <div className="flex items-center text-sm">
-                    <Calendar className="h-4 w-4 mr-2 text-muted-foreground" />
+                    <Calendar className="w-4 h-4 mr-2 text-muted-foreground" />
                     <span>Founded {investor?.foundedAt}</span>
                   </div>
                 )}
                 {investor?.website && (
                   <div className="flex items-center text-sm">
-                    <Globe className="h-4 w-4 mr-2 text-muted-foreground" />
+                    <Globe className="w-4 h-4 mr-2 text-muted-foreground" />
                     <a
                       href={
                         investor?.website.startsWith("http")
@@ -132,16 +166,16 @@ export default function InvestorDetails({ investor }: any) {
                       }
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-primary hover:underline flex items-center"
+                      className="flex items-center text-primary hover:underline"
                     >
                       {investor?.website.replace(/^https?:\/\//, "")}
-                      <ExternalLink className="h-3 w-3 ml-1" />
+                      <ExternalLink className="w-3 h-3 ml-1" />
                     </a>
                   </div>
                 )}
                 {investor?.email && (
                   <div className="flex items-center text-sm">
-                    <Mail className="h-4 w-4 mr-2 text-muted-foreground" />
+                    <Mail className="w-4 h-4 mr-2 text-muted-foreground" />
                     <a
                       href={`mailto:${investor?.email}`}
                       className="text-primary hover:underline"
@@ -152,7 +186,7 @@ export default function InvestorDetails({ investor }: any) {
                 )}
                 {investor?.phone && (
                   <div className="flex items-center text-sm">
-                    <Phone className="h-4 w-4 mr-2 text-muted-foreground" />
+                    <Phone className="w-4 h-4 mr-2 text-muted-foreground" />
                     <a
                       href={`tel:${investor?.phone}`}
                       className="text-primary hover:underline"
@@ -203,7 +237,7 @@ export default function InvestorDetails({ investor }: any) {
               {investor?.description && (
                 <div className="space-y-2">
                   <h3 className="text-sm font-medium">About</h3>
-                  <p className="text-sm text-muted-foreground whitespace-pre-line">
+                  <p className="text-sm whitespace-pre-line text-muted-foreground">
                     {investor?.description}
                   </p>
                 </div>
@@ -212,7 +246,7 @@ export default function InvestorDetails({ investor }: any) {
               {/* Investment Preferences */}
               <div className="space-y-2">
                 <h3 className="text-sm font-medium">Investment Preferences</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                   {investor?.stage && (
                     <div className="space-y-1">
                       <p className="text-xs text-muted-foreground">
@@ -319,7 +353,7 @@ export default function InvestorDetails({ investor }: any) {
               {investor?.address && (
                 <div className="space-y-2">
                   <h3 className="text-sm font-medium">Address</h3>
-                  <p className="text-sm text-muted-foreground whitespace-pre-line">
+                  <p className="text-sm whitespace-pre-line text-muted-foreground">
                     {investor?.address}
                   </p>
                 </div>

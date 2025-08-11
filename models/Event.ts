@@ -41,7 +41,11 @@ const eventSchema = new Schema(
     website: { type: String },
     socialMedia: { type: String },
     tags: [{ type: String }],
-
+    status: {
+      type: String,
+      enum: ["pending", "approved", "rejected"],
+      default: "pending",
+    },
     speakers: [
       {
         id: { type: String, required: true },
